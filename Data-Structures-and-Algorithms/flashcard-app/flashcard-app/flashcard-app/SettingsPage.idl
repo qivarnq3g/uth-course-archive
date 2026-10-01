@@ -1,0 +1,9 @@
+namespace flashcard_app
+{
+    [default_interface]
+    runtimeclass SettingsPage : Microsoft.UI.Xaml.Controls.Page
+    {
+        SettingsPage();
+    }
+}
+

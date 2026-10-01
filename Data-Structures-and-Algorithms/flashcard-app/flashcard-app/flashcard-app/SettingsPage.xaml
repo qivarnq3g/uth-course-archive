@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="flashcard_app.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:flashcard_app"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Loaded="Page_Loaded">
+
+    <Grid Padding="24">
+        <StackPanel Spacing="24">
+
+            <StackPanel Spacing="8">
+                <TextBlock x:Name="LanguageTitle"
+                           Text="Ngôn ngữ / Language"
+                           FontSize="18"
+                           FontWeight="SemiBold"/>
+
+                <ComboBox x:Name="LanguageCombo"
+                          Width="200"
+                          SelectionChanged="LanguageCombo_SelectionChanged">
+                    <ComboBoxItem Content="Tiếng Việt" Tag="vi" IsSelected="True"/>
+                    <ComboBoxItem Content="English"     Tag="en"/>
+                </ComboBox>
+            </StackPanel>
+
+            <StackPanel Spacing="4">
+                <TextBlock x:Name="DeveloperTitle"
+                           Text="Thông tin người phát triển"
+                           FontSize="18"
+                           FontWeight="SemiBold"/>
+
+                <TextBlock x:Name="DevNameText" Text="Hoàng Việt Quang"/>
+                <TextBlock x:Name="GitHubLabelText" Text="GitHub:"/>
+                <HyperlinkButton Content="TeoSushi1014 / flashcard-app"
+                                 NavigateUri="https://github.com/TeoSushi1014/flashcard-app"/>
+            </StackPanel>
+
+        </StackPanel>
+    </Grid>
+</Page>
+

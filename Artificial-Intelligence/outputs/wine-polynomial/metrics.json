@@ -1,0 +1,100 @@
+{
+  "protocol": {
+    "train_proportion": 0.7,
+    "test_proportion": 0.3,
+    "random_state": 42,
+    "degrees": [
+      2,
+      3
+    ],
+    "selection_policy": "Both required degrees are reported; test metrics are not used to retune or select a final model."
+  },
+  "datasets": [
+    {
+      "dataset": "red",
+      "title": "Wine quality - red",
+      "catalog_id": "winequality-red.tab",
+      "source_url": "https://datasets.biolab.si/winequality-red.tab",
+      "rows": 1599,
+      "columns_total": 12,
+      "features": 11,
+      "target": "quality",
+      "target_kind": "continuous numeric (ordinal score treated as regression)",
+      "missing_values": 0,
+      "train_rows": 1120,
+      "test_rows": 479
+    },
+    {
+      "dataset": "white",
+      "title": "Wine quality - white",
+      "catalog_id": "winequality-white.tab",
+      "source_url": "https://datasets.biolab.si/winequality-white.tab",
+      "rows": 4898,
+      "columns_total": 12,
+      "features": 11,
+      "target": "quality",
+      "target_kind": "continuous numeric (ordinal score treated as regression)",
+      "missing_values": 0,
+      "train_rows": 3429,
+      "test_rows": 1469
+    }
+  ],
+  "metrics": [
+    {
+      "dataset": "red",
+      "degree": 2,
+      "model": "ordinary_polynomial_linear_regression",
+      "random_state": 42,
+      "train_rows": 1120,
+      "test_rows": 479,
+      "features_before": 11,
+      "features_after": 77,
+      "mae": 0.5008398335795333,
+      "rmse": 0.6637905206988034,
+      "r2": 0.29732122057207966,
+      "fit_seconds": 0.008294700000078592
+    },
+    {
+      "dataset": "red",
+      "degree": 3,
+      "model": "ordinary_polynomial_linear_regression",
+      "random_state": 42,
+      "train_rows": 1120,
+      "test_rows": 479,
+      "features_before": 11,
+      "features_after": 363,
+      "mae": 0.696646731848112,
+      "rmse": 1.9572157299100736,
+      "r2": -5.1090283548266,
+      "fit_seconds": 0.04612959999985833
+    },
+    {
+      "dataset": "white",
+      "degree": 2,
+      "model": "ordinary_polynomial_linear_regression",
+      "random_state": 42,
+      "train_rows": 3429,
+      "test_rows": 1469,
+      "features_before": 11,
+      "features_after": 77,
+      "mae": 0.5601029724957729,
+      "rmse": 0.7305446881716626,
+      "r2": 0.32222585273962356,
+      "fit_seconds": 0.015687500000240107
+    },
+    {
+      "dataset": "white",
+      "degree": 3,
+      "model": "ordinary_polynomial_linear_regression",
+      "random_state": 42,
+      "train_rows": 3429,
+      "test_rows": 1469,
+      "features_before": 11,
+      "features_after": 363,
+      "mae": 0.5993120604980207,
+      "rmse": 0.8711497798531528,
+      "r2": 0.03622182573694599,
+      "fit_seconds": 0.08262520000016593
+    }
+  ]
+}

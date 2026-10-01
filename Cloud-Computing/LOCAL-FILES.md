@@ -1,0 +1,14 @@
+# Tệp học tập tại Cloud-Computing
+
+Danh mục tệp có sẵn ngoài bản lưu Moodle. Tài liệu rời được nhóm trong `personal/`; đường dẫn bài làm và dự án hiện có được giữ nguyên.
+
+- [Bản lưu Moodle](<materials/README.md>)
+- [Danh mục 43 học phần](<../COURSES.md>)
+- [Tài liệu riêng đã sắp xếp](<personal/README.md>)
+
+## Thư mục bài tập, tài liệu và dự án
+
+| Thư mục | Tệp bên trong |
+|---|---:|
+| [docs](<docs>) | 38 |
+| [Tài liệu riêng](<personal/README.md>) | 1 |

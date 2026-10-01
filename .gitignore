@@ -1,0 +1,97 @@
+# Agent scratch space — disposable by contract, never committed
+scratch/
+.scratch/
+*.tmp
+*.scratch.*
+
+# Agent instructions, local state, and private project memory
+**/AGENTS.md
+**/CLAUDE.md
+**/.claude/
+**/.codex/
+**/.agents/
+**/.antigravity/
+**/.cursor/
+**/.github/
+**/.worktrees/
+**/.hallmark/
+**/.lima/
+**/skills-lock.json
+**/docs/project-context.md
+**/docs/knowledge/
+**/docs/runbooks/
+**/docs/internal/
+/skills/
+/Natural-Language-Processing/
+/ViGTI/
+/scripts/
+
+# Local audit reports; the public index is COURSES.md
+/DUPLICATES.md
+/FILE-ORGANIZATION.md
+/LOCAL-FILES.md
+/FILE-AUDIT*.json
+/FILE-CONSOLIDATION*.json
+/FILE-ROOT-RELOCATION*.json
+
+# Public export: keep integration credentials and invalid documents local
+/Software-Engineering/se-quiz-examination-system/
+/IT-Enterprise-Management/btl/report.docx
+/IT-Enterprise-Management/btl/report.pdf
+/Introduction-to-Law/BTL/PR.docx
+/Introduction-to-Information-Technology/materials/16_Final-grades/*.xlsx
+/Scientific-Socialism/*.xlsx
+/Software-Engineering/materials/13_E-Learning-5-23-01-28-01/Testing Document Template.xlsx
+
+# Secrets — an agent must never stage these
+.env
+.env.*
+!.env.example
+!**/.env.example
+secrets/
+secrets.json
+config_secret.py
+*.key
+*.pem
+*.p12
+*.pfx
+*.tfstate
+*.tfstate.*
+.terraform/
+
+# Build and cache output
+dist/
+build/
+out/
+node_modules/
+bin/
+obj/
+target/
+coverage/
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.cache/
+.ipynb_checkpoints/
+.vs/
+.idea/
+.vscode/
+*.log
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.tsbuildinfo
+*.swp
+*.swo
+
+# OS artifacts
+Thumbs.db
+desktop.ini
+.DS_Store
+._*
+*.bkp

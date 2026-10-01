@@ -1,0 +1,148 @@
+% ============================================================
+%  Ma Tran BCG -- Vi Du 2
+%  Compile: pdflatex bcg_matrix.tex
+%  Requires: MiKTeX with LaTeX Workshop in VS Code
+% ============================================================
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage{newtxtext,newtxmath}
+\usepackage[top=2cm,bottom=2cm,left=2.5cm,right=2cm]{geometry}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{array}
+\usetikzlibrary{arrows.meta}
+
+\setlength{\parindent}{0pt}
+
+% ============================================================
+%  Coordinate mapping (TikZ units = cm):
+%    tikz_x = RMS * 5        range [0, 12.5]   (RMS 0 to 2.5)
+%    tikz_y = G(%) * 0.25    range [-8, 5]     (G -32% to +20%)
+%    Vertical divider:   x = 5   <->  RMS = 1
+%    Horizontal divider: y = 2.5 <->  G   = 10%
+%
+%  Circle radii proportional to sqrt(P):
+%    r = 0.58 * sqrt(P / 29.91)   [r_max = 0.58 cm for SBU D]
+%
+%  SBU positions:
+%    A  x=9.80  y= 0.54  r=0.41  Cash Cow (blue)
+%    B  x=4.00  y= 1.09  r=0.50  Dog      (red)
+%    C  x=2.65  y=-2.38  r=0.37  Dog      (red)
+%    D  x=10.00 y= 1.67  r=0.58  Cash Cow (blue, largest)
+%    E  x=5.85  y= 4.17  r=0.31  Star     (orange-yellow)
+%    F  x=2.15  y=-6.48  r=0.37  Dog      (red)
+% ============================================================
+
+\begin{document}
+
+\textbf{Họ và tên: Hoàng Việt Quang}\\
+\textbf{MSSV: 066206005044}
+
+\vspace{0.2cm}
+
+\section*{Bước 1. Dữ liệu}
+Tổng doanh số 2012: $1605$.
+
+\begin{center}
+\begin{tabular}{c r r r}
+\toprule
+SBU & DS 2011 & DS 2012 & Đối thủ mạnh nhất \\
+\midrule
+A & 230 & 235 & 120 \\
+B & 345 & 360 & 450 \\
+C & 210 & 190 & 360 \\
+D & 450 & 480 & 240 \\
+E & 120 & 140 & 120 \\
+F & 270 & 200 & 470 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section*{Bước 2. Chỉ số}
+\[
+G=\frac{DS_{2012}-DS_{2011}}{DS_{2011}}\times 100\%,\quad
+RMS=\frac{\text{DS SBU}}{\text{DS đối thủ}},\quad
+P=\frac{DS_{2012}}{1605}\times 100\%
+\]
+
+\begin{center}
+\begin{tabular}{c r r r}
+\toprule
+SBU & $G(\%)$ & $RMS$ & $P(\%)$ \\
+\midrule
+A & 2.17 & 1.96 & 14.64 \\
+B & 4.35 & 0.80 & 22.43 \\
+C & -9.52 & 0.53 & 11.84 \\
+D & 6.67 & 2.00 & 29.91 \\
+E & 16.67 & 1.17 & 8.72 \\
+F & -25.93 & 0.43 & 12.46 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section*{Bước 3. Ma trận BCG}
+Trục tung: $G$, trục hoành: $RMS$.
+Gạch đen = trục tọa độ; gạch đỏ = chia vùng tại $G=10\%$ và $RMS=1$.
+Tâm vòng tròn: $(RMS,G)$, kích thước theo $P$.
+
+\begin{center}
+\begin{tikzpicture}[x=4cm,y=0.16cm]
+
+  % Axes range: x in [0,2.5], y in [-30,20]
+  \draw[very thick, black] (0,-30) -- (0,20);
+  \draw[very thick, black] (0,0) -- (2.5,0);
+
+  % BCG split lines
+  \draw[very thick, red!85!black] (1,-30) -- (1,20);
+  \draw[very thick, red!85!black] (0,10) -- (2.5,10);
+
+  % Ticks and labels
+  \foreach \y in {-30,-20,-10,0,10,20} {
+    \draw (0.00,\y) -- (-0.03,\y);
+    \node[left, font=\scriptsize] at (-0.03,\y) {\y\%};
+  }
+  \foreach \x in {0,0.5,1,1.5,2,2.5} {
+    \draw (\x,0.6) -- (\x,-0.6);
+    \node[below, font=\scriptsize] at (\x,-0.8) {\x};
+  }
+
+  % SBU circles (scaled radii to avoid overlap)
+  \filldraw[fill=blue!55, draw=blue!80!black, line width=0.8pt] (1.96,  2.17) circle (0.20cm);
+  \node[font=\scriptsize\bfseries, text=white] at (1.96,  2.17) {A};
+
+  \filldraw[fill=blue!55, draw=blue!80!black, line width=0.8pt] (0.80,  4.35) circle (0.24cm);
+  \node[font=\scriptsize\bfseries, text=white] at (0.80,  4.35) {B};
+
+  \filldraw[fill=blue!55, draw=blue!80!black, line width=0.8pt] (0.53, -9.52) circle (0.18cm);
+  \node[font=\scriptsize\bfseries, text=white] at (0.53, -9.52) {C};
+
+  \filldraw[fill=blue!55, draw=blue!80!black, line width=0.8pt] (2.00,  6.67) circle (0.28cm);
+  \node[font=\scriptsize\bfseries, text=white] at (2.00,  6.67) {D};
+
+  \filldraw[fill=blue!55, draw=blue!80!black, line width=0.8pt] (1.17, 16.67) circle (0.15cm);
+  \node[font=\scriptsize\bfseries, text=white] at (1.17, 16.67) {E};
+
+  \filldraw[fill=blue!55, draw=blue!80!black, line width=0.8pt] (0.43,-25.93) circle (0.18cm);
+  \node[font=\scriptsize\bfseries, text=white] at (0.43,-25.93) {F};
+
+  % Axis titles
+  \node[above, font=\scriptsize\bfseries] at (0,20) {Tăng trưởng G (\%)};
+  \node[right, font=\scriptsize\bfseries] at (2.5,0) {RMS};
+
+\end{tikzpicture}
+\end{center}
+
+\section*{Bước 4. Kết luận}
+\begin{itemize}
+  \item Sao: E.
+  \item Bò sữa: A, D.
+  \item Dấu hỏi: Không có.
+  \item Chó: B, C, F.
+\end{itemize}
+
+\textit{D lớn nhất, E nhỏ nhất (theo $P$).}
+
+\end{document}

@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='utf-8'?>
+<scheme version="2.0" title="Regression Tree - Ames" description="70/30 held-out workflow. Data Sample trains the Tree; Remaining Data is used by Predictions and Test &amp; Score.">
+	<nodes>
+		<node id="0" name="File" qualified_name="Orange.widgets.data.owfile.OWFile" project_name="Orange3" version="" title="File" position="(80.0, 180.0)" />
+		<node id="1" name="Select Columns" qualified_name="Orange.widgets.data.owselectcolumns.OWSelectAttributes" project_name="Orange3" version="" title="Select Columns" position="(250.0, 180.0)" />
+		<node id="2" name="Data Sampler" qualified_name="Orange.widgets.data.owdatasampler.OWDataSampler" project_name="Orange3" version="" title="Data Sampler 70/30" position="(440.0, 180.0)" />
+		<node id="3" name="Tree" qualified_name="Orange.widgets.model.owtree.OWTreeLearner" project_name="Orange3" version="" title="Tree" position="(630.0, 180.0)" />
+		<node id="4" name="Predictions" qualified_name="Orange.widgets.evaluate.owpredictions.OWPredictions" project_name="Orange3" version="" title="Predictions (test)" position="(820.0, 110.0)" />
+		<node id="5" name="Data Table" qualified_name="Orange.widgets.data.owtable.OWTable" project_name="Orange3" version="" title="Data Table" position="(1010.0, 110.0)" />
+		<node id="6" name="Tree Viewer" qualified_name="Orange.widgets.visualize.owtreeviewer.OWTreeGraph" project_name="Orange3" version="" title="Tree Viewer" position="(820.0, 270.0)" />
+		<node id="7" name="Test and Score" qualified_name="Orange.widgets.evaluate.owtestandscore.OWTestAndScore" project_name="Orange3" version="" title="Test &amp; Score (held-out)" position="(640.0, 430.0)" />
+	</nodes>
+	<links>
+		<link id="0" source_node_id="0" sink_node_id="1" source_channel="Data" sink_channel="Data" enabled="true" source_channel_id="data" sink_channel_id="data" />
+		<link id="1" source_node_id="1" sink_node_id="2" source_channel="Data" sink_channel="Data" enabled="true" source_channel_id="data" sink_channel_id="data" />
+		<link id="2" source_node_id="2" sink_node_id="3" source_channel="Data Sample" sink_channel="Data" enabled="true" source_channel_id="data_sample" sink_channel_id="data" />
+		<link id="3" source_node_id="2" sink_node_id="4" source_channel="Remaining Data" sink_channel="Data" enabled="true" source_channel_id="remaining_data" sink_channel_id="data" />
+		<link id="4" source_node_id="3" sink_node_id="4" source_channel="Model" sink_channel="Predictors" enabled="true" source_channel_id="model" sink_channel_id="predictors" />
+		<link id="5" source_node_id="4" sink_node_id="5" source_channel="Predictions" sink_channel="Data" enabled="true" source_channel_id="annotated" sink_channel_id="data" />
+		<link id="6" source_node_id="3" sink_node_id="7" source_channel="Learner" sink_channel="Learner" enabled="true" source_channel_id="learner" sink_channel_id="learner" />
+		<link id="7" source_node_id="2" sink_node_id="7" source_channel="Data Sample" sink_channel="Data" enabled="true" source_channel_id="data_sample" sink_channel_id="train_data" />
+		<link id="8" source_node_id="2" sink_node_id="7" source_channel="Remaining Data" sink_channel="Test Data" enabled="true" source_channel_id="remaining_data" sink_channel_id="test_data" />
+		<link id="9" source_node_id="3" sink_node_id="6" source_channel="Model" sink_channel="Tree" enabled="true" source_channel_id="model" sink_channel_id="tree" />
+	</links>
+	<annotations />
+	<thumbnail />
+	<node_properties>
+		<properties node_id="0" format="pickle">gASVVwEAAAAAAAB9lCiMDHJlY2VudF9wYXRoc5RdlIweb3Jhbmdld2lkZ2V0LnV0aWxzLmZpbGVk
+aWFsb2dzlIwKUmVjZW50UGF0aJSTlCmBlH2UKIwHYWJzcGF0aJSMQkQ6L2NvdXJzZXMvYXJ0aWZp
+Y2lhbC1pbnRlbGxpZ2VuY2Uvb3JhbmdlL2RhdGEvYW1lc19yZWdyZXNzaW9uLmNzdpSMBnByZWZp
+eJSMB2Jhc2VkaXKUjAdyZWxwYXRolIwYZGF0YS9hbWVzX3JlZ3Jlc3Npb24uY3N2lIwFdGl0bGWU
+jACUjAVzaGVldJRoD4wLZmlsZV9mb3JtYXSUjBhPcmFuZ2UuZGF0YS5pby5DU1ZSZWFkZXKUdWJh
+jAtyZWNlbnRfdXJsc5RdlIwGc291cmNllEsAjAN1cmyUaA+MC3NoZWV0X25hbWVzlH2UjAtfX3Zl
+cnNpb25fX5RLAXUu
+</properties>
+		<properties node_id="1" format="pickle">gASVJwIAAAAAAAB9lCiMC2F1dG9fY29tbWl0lIiMEmNvbnRyb2xBcmVhVmlzaWJsZZSIjBNpZ25v
+cmVfbmV3X2ZlYXR1cmVzlImME3NhdmVkV2lkZ2V0R2VvbWV0cnmUTowSdXNlX2lucHV0X2ZlYXR1
+cmVzlImMC19fdmVyc2lvbl9flEsBjBBjb250ZXh0X3NldHRpbmdzlF2UjBVvcmFuZ2V3aWRnZXQu
+c2V0dGluZ3OUjAdDb250ZXh0lJOUKYGUfZQojAZ2YWx1ZXOUfZQojBFkb21haW5fcm9sZV9oaW50
+c5R9lCiMBGFyZWGUSwKGlIwJYXR0cmlidXRllEsAhpSMDUJlZHJvb20uQWJ2R3KUSwKGlGgUSwGG
+lIwJRnVsbC5CYXRolEsChpRoFEsChpSMCUhhbGYuQmF0aJRLAoaUaBRLA4aUjA1Ub3RSbXMuQWJ2
+R3JklEsChpRoFEsEhpSMClllYXIuQnVpbHSUSwKGlGgUSwWGlIwLR2FyYWdlLkFyZWGUSwKGlGgU
+SwaGlIwMT3ZlcmFsbC5RdWFslEsChpRoFEsHhpSMDE92ZXJhbGwuQ29uZJRLAoaUaBRLCIaUjAVw
+cmljZZRLAoaUjAVjbGFzc5RLAIaUdUr+////hpRoBksBdYwKYXR0cmlidXRlc5R9lChoEksCaBZL
+AmgZSwJoHEsCaB9LAmgiSwJoJUsCaChLAmgrSwJoLksCdYwFbWV0YXOUfZR1YmF1Lg==
+</properties>
+		<properties node_id="2" format="literal">{'sampling_type': 0, 'sampleSizePercentage': 70, 'replacement': False, 'use_seed': True, 'stratify': False, 'compatibility_mode': False, '__version__': 2}</properties>
+		<properties node_id="3" format="literal">{'auto_apply': True, 'learner_name': 'Regression Tree', 'binary_trees': True, 'limit_depth': True, 'max_depth': 4, 'limit_min_internal': True, 'min_internal': 4, 'limit_min_leaf': True, 'min_leaf': 2, 'limit_majority': False, 'sufficient_majority': 95, '__version__': 1}</properties>
+		<properties node_id="7" format="literal">{'resampling': 5, 'cv_stratified': False, 'shuffle_stratified': False, '__version__': 4}</properties>
+	</node_properties>
+	<session_state>
+		<window_groups />
+	</session_state>
+</scheme>

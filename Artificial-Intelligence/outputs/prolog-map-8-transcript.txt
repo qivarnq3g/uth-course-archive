@@ -1,0 +1,54 @@
+Command
+-------
+C:\Program Files\swipl\bin\swipl.exe -q -s wumpus-prolog-game-main\wumpus.qlf -g "start(8),climbdown,goright,shootright,goright,goup,goup,grab,godown,godown,goleft,goleft,climbup" -t halt
+
+Normalized transcript
+---------------------
+start(8).
+Position: (0,0). Percepts: Nothing at all. Score: 0.
+
+climbdown.
+Position: (1,1). Percepts: Nothing at all. Score: 0.
+
+goright.
+Position: (2,1). Percepts: Breeze, Stench. Score: -1.
+
+shootright.
+Event: Scream; Wumpus killed.
+Position: (2,1). Percepts: Breeze. Score: -11.
+
+goright.
+Position: (3,1). Percepts: Nothing at all. Score: -12.
+
+goup.
+Position: (3,2). Percepts: Breeze. Score: -13.
+
+goup.
+Position: (3,3). Percepts: Glitter. Score: -14.
+
+grab.
+Event: Gold acquired. Score: 86.
+
+godown.
+Position: (3,2). Percepts: Breeze. Score: 85.
+
+godown.
+Position: (3,1). Percepts: Nothing at all. Score: 84.
+
+goleft.
+Position: (2,1). Percepts: Breeze. Score: 83.
+
+goleft.
+Position: (1,1). Percepts: Nothing at all. Score: 82.
+
+climbup.
+Event: Mission completed. Final score: 1082.
+
+Score audit
+-----------
+8 moves x -1       = -8
+1 arrow x -10      = -10
+grab gold          = +100
+successful climbup = +1000
+total              = 1082
+

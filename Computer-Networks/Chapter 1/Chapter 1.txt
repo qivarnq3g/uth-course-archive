@@ -1,0 +1,136 @@
+## Phần 1: Tóm tắt nhanh
+
+- **Internet là gì?**  
+  - Một “mạng của các mạng” toàn cầu kết nối hàng tỷ thiết bị (hosts) qua các router, switch và các liên kết truyền dẫn (cáp, không dây…).
+  - Có hai góc nhìn:  
+    • Góc nhìn “nuts and ``bolts” (chi tiết kỹ thuật).  
+    • Góc nhìn “services” (dịch vụ cung cấp cho các ứng dụng như web, email, streaming,…).
+
+- **Giao thức (Protocol):**  
+  - Tập hợp các quy tắc và định dạng tin nhắn cho việc gửi, nhận và xử lý dữ liệu giữa các thiết bị.
+  - Ví dụ: HTTP, TCP, IP, v.v.
+
+- **Network Edge (Rìa mạng):**  
+  - Bao gồm các thiết bị đầu cuối (hosts – máy tính, điện thoại, máy chủ) và mạng truy cập (access networks như mạng gia đình, doanh nghiệp, di động) sử dụng các phương tiện vật lý (có dây và không dây).
+
+- **Network Core (Lõi mạng):**  
+  - Chức năng chuyển tiếp dữ liệu giữa các nút qua hai phương thức chính:  
+    • **Packet switching:** Dữ liệu được chia thành các gói và chuyển tiếp theo phương pháp “store and forward”.  
+    • **Circuit switching:** Thiết lập kênh cố định giữa nguồn và đích (ít phổ biến trên Internet hiện nay).  
+  - Cấu trúc Internet gồm nhiều lớp: từ các ISP cục bộ đến các nhà cung cấp dịch vụ toàn cầu và các điểm trao đổi (IXP).
+
+- **Hiệu năng mạng (Performance):**  
+  - **Mất gói (Loss):** Do bộ đệm đầy khi lưu lượng vượt quá khả năng truyền tải.  
+  - **Độ trễ (Delay):** Bao gồm các thành phần: xử lý (processing delay), chờ đợi (queueing delay), truyền tải (transmission delay) và truyền sóng (propagation delay).  
+  - **Thông lượng (Throughput):** Tốc độ dữ liệu thực tế đạt được, thường bị giới hạn bởi liên kết “bottleneck”.
+
+- **An ninh mạng (Security):**  
+  - Các mối đe dọa như nghe lén (packet sniffing), giả mạo địa chỉ (IP spoofing) và tấn công từ chối dịch vụ (DoS).  
+  - Biện pháp bảo vệ bao gồm: xác thực, mã hóa, kiểm tra tính toàn vẹn và sử dụng tường lửa.
+
+---
+
+## Phần 2: Giải thích chi tiết
+
+### I. Internet – Cấu trúc và Cách hoạt động
+
+1. **Khái niệm và Góc nhìn:**  
+   - **Nuts and bolts view:** 	 
+     Internet là hệ thống kết nối các thiết bị (hosts) qua các router và switch sử dụng các phương tiện vật lý (cáp đồng, cáp quang, sóng vô tuyến…).  
+     - Các thành phần cơ bản:  
+       • **Hosts:** Thiết bị người dùng và máy chủ.  
+       • **Router/Switch:** Thiết bị chuyển tiếp gói tin dựa trên các giao thức.
+   - **Services view:**  
+     Internet không chỉ là hạ tầng vật lý mà còn cung cấp các dịch vụ như Web, email, streaming, và thương mại điện tử. Nó cung cấp các “API” hoặc “hook” cho các ứng dụng truy cập dịch vụ truyền tải dữ liệu.
+
+2. **Giao thức (Protocols):**  
+   - Định nghĩa: Các giao thức là bộ quy tắc để các thiết bị “nói chuyện” với nhau.  
+   - Chức năng chính:  
+     • Xác định cấu trúc tin nhắn.  
+     • Điều khiển thứ tự gửi, nhận, và xử lý dữ liệu.
+   - Ví dụ:  
+     • **HTTP:** Giao thức trao đổi dữ liệu trang web.  
+     • **TCP/UDP:** Quản lý truyền tải dữ liệu, trong đó TCP đảm bảo tính tin cậy và UDP cho tốc độ (không tin cậy).  
+     • **IP:** Xác định địa chỉ và định tuyến gói tin.
+
+### II. Network Edge: Hosts, Access Networks và Physical Media
+
+1. **Hosts:**  
+   - Là các thiết bị cuối (máy tính, điện thoại, máy chủ, IoT…) mà người dùng và ứng dụng sử dụng để kết nối Internet.
+
+2. **Access Networks:**  
+   - Các mạng truy cập cho phép hosts kết nối với Internet.  
+   - Bao gồm:  
+     • **Mạng gia đình:** Sử dụng modem cable, DSL, router tích hợp WiFi và Ethernet.  
+     • **Mạng doanh nghiệp:** Có thể sử dụng công nghệ Ethernet, WiFi kết hợp với các giải pháp bảo mật và quản lý riêng.  
+     • **Mạng di động:** 4G/5G và WiFi công cộng.
+   
+3. **Physical Media:**  
+   - **Có dây:** Cáp đồng, cáp quang, cáp đồng trục…  
+   - **Không dây:** Sóng vô tuyến, tín hiệu radio, vệ tinh.
+   - Những phương tiện này quyết định tốc độ truyền tải (bandwidth), khoảng cách và khả năng chống nhiễu của hệ thống.
+
+### III. Network Core: Packet Switching, Circuit Switching và Cấu trúc Internet
+
+1. **Packet Switching:**  
+   - **Nguyên tắc:**  
+     • Dữ liệu từ ứng dụng được chia thành các gói (packets).  
+     • Mỗi gói được “store and forward” qua các router; các gói có thể đi theo các đường khác nhau tùy thuộc vào tình trạng mạng.
+   - **Ưu điểm:**  
+     • Tận dụng tối đa băng thông vì các liên kết được chia sẻ.  
+     • Linh hoạt trong việc xử lý lưu lượng bất đồng bộ.
+   - **Nhược điểm:**  
+     • Có thể gặp phải hiện tượng tắc nghẽn, dẫn đến trễ và mất gói.
+     
+2. **Circuit Switching:**  
+   - **Nguyên tắc:**  
+     • Trước khi truyền dữ liệu, thiết lập một “đường truyền” cố định giữa nguồn và đích.  
+     • Tài nguyên được dành riêng, không chia sẻ trong suốt phiên giao tiếp.
+   - **Ứng dụng:**  
+     • Chủ yếu sử dụng trong mạng điện thoại truyền thống; ít được sử dụng trên Internet hiện nay vì tính linh hoạt thấp.
+     
+3. **Cấu trúc Internet:**  
+   - **Kết nối mạng:**  
+     • Hệ thống Internet bao gồm các Access ISPs (kết nối người dùng), sau đó là các nhà cung cấp dịch vụ ở cấp độ regional và Tier-1, cuối cùng là các Content Provider Networks (Google, Facebook, v.v.).  
+     • Các điểm trao đổi lưu lượng (IXP) được sử dụng để kết nối các mạng với nhau, giúp cho giao tiếp toàn cầu.
+     
+### IV. Hiệu năng Mạng (Performance): Loss, Delay và Throughput
+
+1. **Mất gói (Loss):**  
+   - Xảy ra khi bộ đệm (buffer) của router đầy do lưu lượng vượt quá khả năng xử lý của liên kết.
+   
+2. **Độ trễ (Delay):**  
+   - Bao gồm 4 thành phần:  
+     • **Processing Delay:** Thời gian xử lý tại router (kiểm tra lỗi, xác định đường đi,…).  
+     • **Queueing Delay:** Thời gian chờ đợi trong hàng đợi tại router nếu lưu lượng tạm thời cao.  
+     • **Transmission Delay:** Thời gian “đẩy” gói tin ra khỏi router, được tính theo L (kích thước gói tin) chia cho R (băng thông).  
+     • **Propagation Delay:** Thời gian tín hiệu truyền qua khoảng cách vật lý giữa các thiết bị, phụ thuộc vào khoảng cách và tốc độ truyền (gần tốc độ ánh sáng trong cáp quang).
+   
+3. **Thông lượng (Throughput):**  
+   - Là tốc độ dữ liệu thực tế mà hệ thống đạt được từ đầu đến cuối.  
+   - Thông lượng bị giới hạn bởi liên kết có băng thông thấp nhất (bottleneck) trên đường truyền.
+
+### V. An ninh Mạng (Security)
+
+1. **Các mối đe dọa:**  
+   - **Packet sniffing:** Kẻ tấn công sử dụng thiết bị “nghe” các gói tin trên mạng để thu thập thông tin nhạy cảm.  
+   - **IP spoofing:** Giả mạo địa chỉ nguồn của gói tin để làm rối hoặc tấn công hệ thống.  
+   - **Denial of Service (DoS):** Tấn công nhằm làm quá tải tài nguyên của máy chủ hoặc mạng, khiến cho dịch vụ không khả dụng.
+   
+2. **Các biện pháp bảo vệ:**  
+   - **Xác thực (Authentication):** Đảm bảo chỉ có các thiết bị và người dùng hợp lệ được truy cập vào hệ thống.  
+   - **Mã hóa (Encryption):** Bảo vệ dữ liệu truyền đi bằng cách chuyển đổi thông tin sang dạng không thể đọc được nếu bị đánh cắp.  
+   - **Kiểm tra tính toàn vẹn (Integrity):** Sử dụng chữ ký số để đảm bảo dữ liệu không bị thay đổi.  
+   - **Tường lửa (Firewalls):** Bộ lọc kiểm soát và giám sát lưu lượng truy cập giữa các mạng.
+
+---
+
+## Tổng kết
+
+Chương 1 cung cấp một cái nhìn toàn diện về:
+- **Cấu trúc và hoạt động của Internet:** Từ phần cứng vật lý, các giao thức, đến cách thức chia tầng và cung cấp dịch vụ.  
+- **Vai trò của giao thức:** Đóng vai trò quan trọng trong việc định dạng, truyền tải và xử lý thông tin giữa các thiết bị mạng.  
+- **Phân chia hệ thống thành Network Edge và Network Core:** Giải thích cách các thiết bị đầu cuối kết nối vào mạng và làm thế nào dữ liệu được chuyển tiếp qua các router và liên kết.  
+- **Hiệu năng và an ninh mạng:** Các chỉ số đo lường như mất gói, độ trễ và thông lượng, cùng với các mối đe dọa an ninh và biện pháp phòng chống.
+
+Phần tóm tắt nhanh cho bạn cái nhìn tổng quan, trong khi phần chi tiết giúp hiểu sâu hơn về từng khía cạnh, từ nguyên lý hoạt động đến các ứng dụng thực tiễn trong hệ thống Internet hiện đại.

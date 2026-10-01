@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "defaultEngine": "excel-cli",
+  "primary": {
+    "engine": "excel-cli",
+    "command": "excelcli",
+    "requiresMicrosoftExcel": true,
+    "extensions": [".xlsx", ".xlsm", ".xlsb", ".xls"]
+  },
+  "fallback": {
+    "engine": "minimax-xlsx",
+    "skill": "minimax-xlsx",
+    "requiresMicrosoftExcel": false,
+    "useWhen": ["CSV/TSV", "Microsoft Excel or COM is unavailable", "headless read/analysis is required"],
+    "extensions": [".csv", ".tsv", ".xlsx", ".xlsm"]
+  },
+  "concurrency": {
+    "exclusivePerWorkbook": true,
+    "lockCommand": "tools/Invoke-ExcelEngineLock.ps1",
+    "allowConcurrentEngineMixingOnSameWorkbook": false
+  },
+  "notEnabledByDefault": ["ThepExcelMCP", "xlsx (Anthropic)"]
+}

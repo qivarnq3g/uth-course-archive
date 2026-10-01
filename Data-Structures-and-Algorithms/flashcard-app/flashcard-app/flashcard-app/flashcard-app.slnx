@@ -1,0 +1,10 @@
+<Solution>
+  <Configurations>
+    <Platform Name="ARM64" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="flashcard-app.vcxproj" Id="2f3bb44c-f8e3-4af8-8075-ab76e6ae6850">
+    <Deploy />
+  </Project>
+</Solution>

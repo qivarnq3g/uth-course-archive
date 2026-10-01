@@ -1,0 +1,321 @@
+﻿TRƯỜNG ĐẠI HỌC GIAO THÔNG VẬN TẢI
+THÀNH PHỐ HỒ CHÍ MINH
+VIỆN CÔNG NGHỆ THÔNG TIN VÀ ĐIỆN, ĐIỆN TỬ
+
+
+BÁO CÁO TIỂU LUẬN
+Hệ thống quản lý giao hàng
+Môn: Phân tích thiết kế hệ thống
+Mã lớp học phần: 012012100814
+Sinh viên thực hiện
+Họ tên sinh viênMã số sinh viên1. Hoàng Việt Quang0662060050442. Dương Văn Tài0662060054883. Nguyễn Phúc Hưng066206017157Thành phố Hồ Chí Minh, tháng 12 năm 2025
+TÓM TẮT ĐỒ ÁN
+Trong thời đại thương mại điện tử bùng nổ, việc quản lý giao hàng bằng sổ sách hay các công cụ rời rạc đã không còn hiệu quả, dễ dẫn đến thất lạc đơn hàng và chậm trễ tiến độ. Tiểu luận này tập trung xây dựng hệ thống quản lý giao nhận hàng nhằm số hoá toàn bộ quy trình vận hành, giúp thông tin được luân chuyển thông suốt giữa quản lý, shipper và khách hàng.
+Về phương diện kỹ thuật, nhóm vận dụng phương pháp phân tích thiết kế hướng đối tượng thông qua ngôn ngữ UML. Hệ thống được mô hình hoá chi tiết qua các sơ đồ use case để định vị chức năng, class diagram để thiết kế cấu trúc dữ liệu bền vững, cùng các sơ đồ activity và sequence để làm rõ logic xử lý các nghiệp vụ cốt lõi như điều phối shipper hay cập nhật trạng thái đơn hàng thời gian thực.
+Kết quả của đề tài là một bộ hồ sơ thiết kế hoàn chỉnh, không chỉ giải quyết bài toán quản lý hiện tại mà còn là nền tảng vững chắc để phát triển ứng dụng thực tiễn, giúp doanh nghiệp tối ưu chi phí và nâng cao trải nghiệm cho khách hàng.
+
+
+MỤC LỤC
+
+TÓM TẮT ĐỒ ÁN	1
+MỤC LỤC	2
+LỜI MỞ ĐẦU	5
+CHƯƠNG 1: KHẢO SÁT HIỆN TRẠNG VÀ YÊU CẦU HỆ THỐNG	6
+1.1. Khảo sát hiện trạng và sự cần thiết của đề tài	6
+1.2. Đặc tả yêu cầu hệ thống	6
+1.2.1. Yêu cầu về chức năng	6
+1.2.2. Yêu cầu phi chức năng	7
+1.3. Kế hoạch và kết quả phỏng vấn	8
+1.3.1. Kế hoạch phỏng vấn tổng quan	8
+1.3.2. Tổng hợp kết quả phỏng vấn	9
+CHƯƠNG 2: PHÂN TÍCH HỆ THỐNG	11
+2.1. Xác định tác nhân hệ thống	11
+2.2. Xác định các use case	12
+2.2.1. Use case quản lý hệ thống sử dụng	13
+2.2.2. Use case nhân viên giao sử dụng	13
+2.2.3. Use case khách hàng sử dụng	13
+2.3. Sơ đồ use case	14
+2.3.1. Sơ đồ use case tổng quát	14
+2.3.2. Sơ đồ use case đăng nhập hệ thống	16
+2.3.3. Sơ đồ use case tạo đơn hàng	17
+2.3.4. Sơ đồ use case tra cứu đơn hàng	18
+2.3.5. Sơ đồ use case nhận đơn hàng	19
+2.3.6. Sơ đồ use case cập nhật trạng thái đơn hàng	20
+2.3.7. Sơ đồ use case xem lịch sử giao hàng	21
+2.3.8. Sơ đồ use case quản lý khách hàng	22
+2.3.9. Sơ đồ use case quản lý nhân viên giao hàng	23
+2.3.10. Sơ đồ use case quản lý đơn hàng	24
+2.3.11. Sơ đồ use case quản lý khuyến mãi	25
+2.3.12. Sơ đồ use case thống kê	26
+2.3.13. Sơ đồ use case quản lý tài khoản cá nhân	27
+2.4. Đặc tả use case	27
+2.4.1. Đặc tả use case đăng nhập hệ thống	27
+2.4.2. Đặc tả use case tạo đơn hàng	29
+2.4.3. Đặc tả use case tra cứu đơn hàng	31
+2.4.4. Đặc tả use case nhận đơn hàng	32
+2.4.5. Đặc tả use case cập nhật trạng thái đơn hàng	35
+2.4.6. Đặc tả use case xem lịch sử giao hàng	37
+2.4.7. Đặc tả use case quản lý khách hàng	39
+2.4.8. Đặc tả use case quản lý nhân viên giao hàng	40
+2.4.9. Đặc tả use case quản lý đơn hàng	42
+2.4.10. Đặc tả use case quản lý khuyến mãi	44
+2.4.11. Đặc tả use case thống kê	46
+2.4.12. Đặc tả use case quản lý tài khoản cá nhân	48
+2.5. Sơ đồ hoạt động	50
+2.5.1. Sơ đồ hoạt động đăng nhập hệ thống	50
+2.5.2. Sơ đồ hoạt động tạo đơn hàng	52
+2.5.3. Sơ đồ hoạt động tra cứu đơn hàng	54
+2.5.4. Sơ đồ hoạt động nhận đơn hàng	56
+2.5.5. Sơ đồ hoạt động cập nhật trạng thái đơn hàng	57
+2.5.6. Sơ đồ hoạt động xem lịch sử giao hàng	59
+2.5.7. Sơ đồ hoạt động quản lý khách hàng	61
+2.5.8. Sơ đồ hoạt động quản lý nhân viên giao hàng	62
+2.5.9. Sơ đồ hoạt động quản lý đơn hàng	64
+2.5.10. Sơ đồ hoạt động quản lý khuyến mãi	66
+2.5.11. Sơ đồ hoạt động thống kê	67
+2.5.12. Sơ đồ hoạt động quản lý tài khoản cá nhân	69
+2.6. Sơ đồ lớp	71
+CHƯƠNG 3: THIẾT KẾ HỆ THỐNG	72
+3.1. Thiết kế giao diện trang chủ hệ thống	72
+3.2. Giao diện màn hình các chức năng	72
+CHƯƠNG 4: TỔNG KẾT	73
+4.1. Kết quả đạt được	73
+4.2. Ưu điểm và hạn chế của hệ thống	74
+4.2.1. Ưu điểm	74
+4.2.2. Hạn chế	74
+4.3. Hướng phát triển hệ thống	75
+
+
+
+LỜI MỞ ĐẦU
+Trong những năm gần đây, sự bùng nổ của thương mại điện tử đã biến dịch vụ vận chuyển trở thành mắt xích quan trọng nhất trong chuỗi cung ứng hàng hoá. Tuy nhiên, việc quản lý hàng nghìn đơn hàng mỗi ngày bằng các phương thức thủ công hay ứng dụng rời rạc thường dẫn đến những sai sót không đáng có, gây thất thoát thời gian và giảm uy tín của đơn vị vận chuyển. Nhận thấy tầm quan trọng của việc tối ưu hoá quy trình này, nhóm em đã quyết định thực hiện đề tài hệ thống quản lý giao hàng
+Không chỉ dừng lại ở việc liệt kê chức năng, mà tập trung sâu vào quá trình phân tích và thiết kế hệ thống bằng ngôn ngữ UML. Thông qua việc xây dựng các sơ đồ use cases, class, activity và đặc biệt là sequence diagram, nhóm mong muốn mô phỏng một quy trình giao hàng chuyên nghiệp, từ khâu tiếp nhận đơn đến lúc shipper giao hàng thành công. Dù đã rất cố gắng, nhưng do kiến thức còn hạn chế, bài làm khó tránh khỏi những thiếu sót. Nhóm rất mong nhận được những ý kiến đóng góp từ thầy để hệ thống hoàn thiện hơn
+
+
+CHƯƠNG 1: KHẢO SÁT HIỆN TRẠNG VÀ YÊU CẦU HỆ THỐNG
+1.1. Khảo sát hiện trạng và sự cần thiết của đề tài
+Hiện nay, phần lớn các đơn vị vận chuyển quy mô vừa và nhỏ vẫn duy trì phương thức quản lý thủ công thông qua sổ sách hoặc các công cụ rời rạc như Excel và tin nhắn cá nhân. Quy trình này dẫn đến tình trạng dữ liệu bị phân mảnh, gây khó khăn cho việc tra cứu thông tin và thường xuyên xảy ra sai sót trong quá trình tổng hợp báo cáo. Bên cạnh đó, việc thiếu công cụ giám sát thời gian thực khiến người quản lý không thể nắm bắt chính xác vị trí của nhân viên hay trạng thái đơn hàng, đồng thời khách hàng cũng gặp trở ngại khi muốn chủ động theo dõi hành trình vận đơn. Xuất phát từ thực trạng đó, việc xây dựng hệ thống quản lý giao hàng là vô cùng thiết yếu nhằm số hoá toàn bộ quy trình nghiệp vụ, giúp tối ưu hoá công tác điều phối nhân sự và nâng cao tính minh bạch trong giao nhận hàng hoá
+1.2. Đặc tả yêu cầu hệ thống
+Dựa trên kết quả khảo sát và mong muốn của các bên liên quan, hệ thống quản lý giao hàng cần đáp ứng đầy đủ các nhóm yêu cầu cụ thể sau đây nhằm đảm bảo tính hiệu quả và sự đồng bộ trong vận hành
+1.2.1. Yêu cầu về chức năng
+Nhóm chức năng quản lý vận hành tập trung vào việc cung cấp cho bộ phận quản trị công cụ để khởi tạo, sửa đổi và lưu trữ thông tin đơn hàng chi tiết một cách tập trung. Hệ thống hỗ trợ tính năng phân công giao hàng tự động hoặc thủ công cho các shipper phù hợp dựa trên tình trạng hoạt động, đồng thời cho phép quản lý hồ sơ nhân sự và trích xuất báo cáo thống kê doanh thu theo thời gian thực
+Đối với nhóm chức năng dành cho nhân viên giao hàng, hệ thống cho phép shipper dễ dàng tiếp nhận danh sách đơn hàng được phân công và trực tiếp cập nhật tiến độ vận chuyển ngay trên giao diện cá nhân. Các trạng thái từ lúc lấy hàng cho đến khi giao hàng thành công hoặc thất bại đều được ghi nhận tức thì để bộ phận quản lý và khách hàng có thể nắm bắt kịp thời
+Nhóm chức năng dành cho khách hàng hỗ trợ người dùng tự tạo đơn gửi hàng trực tuyến mà không cần qua các bước trung gian phức tạp. Điểm nhấn của nhóm này là tính năng tra cứu đơn hàng giúp khách hàng theo dõi lộ trình vận chuyển thông qua mã vận đơn, đồng thời cung cấp công cụ gửi phản hồi và đánh giá chất lượng dịch vụ sau khi hoàn tất quy trình giao nhận
+1.2.2. Yêu cầu phi chức năng
+Về mặt hiệu suất và giao diện, hệ thống đòi hỏi tốc độ xử lý nhanh đối với các tác vụ tra cứu và cập nhật trạng thái để đảm bảo tính thời gian thực của dữ liệu. Giao diện người dùng cần được thiết kế theo hướng đơn giản và thân thiện, giúp nhân viên giao hàng cùng khách hàng có thể thao tác dễ dàng và hiệu quả mà không đòi hỏi kỹ năng công nghệ chuyên sâu
+Về tính bảo mật và sẵn sàng, hệ thống thiết lập cơ chế phân quyền rõ ràng giữa quản lý, nhân viên và khách hàng để bảo vệ dữ liệu doanh thu cũng như thông tin cá nhân của người dùng. Ngoài ra, hệ thống cần duy trì khả năng hoạt động ổn định liên tục 24/7, đảm bảo mọi hoạt động đặt hàng và tra cứu của khách hàng không bị gián đoạn ở bất kỳ thời điểm nào
+1.3. Kế hoạch và kết quả phỏng vấn
+Để thu thập đầy đủ thông tin về các yêu cầu thực tế, nhóm đã tiến hành lập kế hoạch và thực hiện các buổi phỏng vấn trực tiếp với những đối tượng trực tiếp tham gia vào hệ thống
+1.3.1. Kế hoạch phỏng vấn tổng quan
+Dưới đây là bảng kế hoạch chi tiết cho hoạt động khảo sát, được lập bởi sinh viên Hoàng Việt Quang vào ngày 02/12/2025 nhằm đảm bảo lộ trình phân tích hệ thống đúng tiến bộ
+STTChủ đề phỏng vấnYêu cầu chi tiếtNgày thực hiện1Quy trình đơn hàngTìm hiểu cách ghi nhận thông tin và phân công đơn hàng02/12/20252Quản lý nhân sựQuy trình tạo tài khoản và quản lý nhân viên giao hàng03/12/20253Quản lý khách hàngCách thức lưu trữ thông tin và lịch sử đặt hàng03/12/20254Quản lý kho và doanh thuCác thức lưu trữ thông tin và lịch sử đặt hàng03/12/20255Yêu cầu hệ thốngXác định mong muốn về giao diện, hiệu suất và bảo mật04/12/2025
+1.3.2. Tổng hợp kết quả phỏng vấn
+Sau khi kết thúc các buổi làm việc theo kế hoạch, nhóm đã ghi nhận được những phản hồi thực tế từ các bên liên quan để làm cơ sở cho việc thiết kế hệ thống
+Trong buổi phỏng vấn diễn ra vào ngày 03/12/2025, anh Nguyễn Phúc Hưng trong vai trò quản lý giao hàng cho biết quy trình hiện tại đang gặp nhiều trở ngại do việc nhập liệu thủ công trên Excel và phân công quan điện thoại gây tốn thời gian thực, đồng thời tự động hoá việc thống kê doanh thu và đánh giá hiệu suất của từng nhân viên
+Đối với đội ngũ shipper, anh Dương Văn Tài chia sẻ trong buổi phỏng vấn cùng ngày về những khó khăn khi nhận đơn qua tin nhắn thường dẫn đến thất lạc thông tin hoặc sai sót trong việc tính tiền thu hộ (COD). Mong muốn của anh là có một ứng dụng di động hỗ trợ xem danh sách đơn hàng trực quan, có bản đồ chỉ đường tích hợp và khả năng cập nhật trạng thái giao hàng thành công ngay tại hiện trường
+Cuối cùng, buổi phỏng vấn khách hàng Nguyễn Trung Hiếu vào ngày 04/12/2025 đã làm rõ nhu cầu về tính minh bạch trong vận chuyển. Chị mong muốn hệ thống cung cấp công cụ tự tra cứu hành trình đơn hàng mọi lúc mà không cần liên hệ trực tiếp với cửa hàng, đồng thời nhận được thông báo tự động khi hàng hoá chuẩn bị được giao tới tay người nhận
+
+
+CHƯƠNG 2: PHÂN TÍCH HỆ THỐNG
+2.1. Xác định tác nhân hệ thống
+STTTên tác nhânVai trò và ý nghĩa1Quản lýĐây là người điều hành toàn bộ hoạt động của hệ thống. Quản lý có trách nhiệm giám sát danh sách đơn hàng, thực hiện phân công shipper, quản lý hồ sơ và khách hàng theo dõi các báo cáo thống kê định kỳ để đảm bảo hiệu suất vận hàng của đơn vị2Nhân viên giao hàngĐây là tác nhân trực tiếp thực hiện việc vận chuyển hàng hoá tới người nhận. Các hoạt động chính bao gồm tiếp nhận đơn hàng được phân công, cập nhật trạng thái giao hàng tức thời lên hệ thống và theo dõi lịch sử các chuyến hàng đã thực hiện thành công3Khách hàngĐây là đối tượng sử dịch vụ để gửi hoặc nhận hàng hoá. Khách hàng thực hiện các tương tác như đăng ký tài khoản, khởi tạo đơn hàng mới, thanh toán phí dịch vụ và chủ động tra cứu tình trạng vận chuyển của đơn hàng và thông qua mã vận đơn 
+2.2. Xác định các use case
+Dựa trên phân tích yêu cầu, các ca sử dụng của hệ thống được phân chia theo từng tác nhân cụ thể nhằm đảm bảo quy trình vận hành diễn ra thông suốt và chính xác
+2.2.1. Use case quản lý hệ thống sử dụng
+Người quản lý thực hiện điều hành hoạt động kinh doanh thông qua các chức năng đăng nhập, quản lý tài khoản cá nhân, quản lý khách hàng và nhân viên giao hàng. Ngoài ra admin còn trực tiếp quản lý đơn hàng từ khâu duyệt đến phân công, kết hợp với quản lý các chương trình khuyến mãi và theo dõi thống kê hiệu suất toàn hệ thống
+2.2.2. Use case nhân viên giao sử dụng
+Nhân viên giao hàng sử dụng hệ thống để phục vụ công tác vận chuyển bao gồm đăng nhập, quản lý tài khoản cá nhân, nhận đơn hàng được phân công và cập nhật trạng thái giao nhận. Shipper cũng có quyền chủ động xem lại lịch sử các đơn đã hoàn thành và theo dõi các thống kê cá nhân về năng suất làm việc
+2.2.3. Use case khách hàng sử dụng
+Khách hàng tương tác với hệ thống để sử dụng dịch vụ thông qua chức năng đăng ký, đăng nhập và quản lý thông tin tài khoản cá nhân. Các tính năng trọng tâm được cung cấp bao gồm tạo đơn hàng mới, tra cứu trạng thái đơn hàng trực tuyến qua mã vận đơn và xem lại toàn bộ lịch sử giao dịch đã thực hiện
+2.3. Sơ đồ use case
+2.3.1. Sơ đồ use case tổng quát
+
+2.3.2. Sơ đồ use case đăng nhập hệ thống
+
+2.3.3. Sơ đồ use case tạo đơn hàng
+
+2.3.4. Sơ đồ use case tra cứu đơn hàng
+
+2.3.5. Sơ đồ use case nhận đơn hàng
+
+2.3.6. Sơ đồ use case cập nhật trạng thái đơn hàng
+
+2.3.7. Sơ đồ use case xem lịch sử giao hàng
+
+2.3.8. Sơ đồ use case quản lý khách hàng
+
+2.3.9. Sơ đồ use case quản lý nhân viên giao hàng
+
+2.3.10. Sơ đồ use case quản lý đơn hàng
+
+2.3.11. Sơ đồ use case quản lý khuyến mãi
+
+2.3.12. Sơ đồ use case thống kê
+
+2.3.13. Sơ đồ use case quản lý tài khoản cá nhân
+
+
+2.4. Đặc tả use case
+2.4.1. Đặc tả use case đăng nhập hệ thống
+MụcNội dung chi tiếtMã use caseUC-01Tên use caseĐăng nhập hệ thốngTác nhân chínhKhách hàng, nhân viên giao hàng, quản lýMô tảCho phép người dùng đăng nhập để truy cập các chức năng theo vai tròTiền điều kiệnNgười dùng có tài khoản đã kích hoạt và chưa đăng nhậpHậu điều kiệnChuyển đến giao diện chính theo vai trò hoặc thông báo lỗiLuồng sự kiện chính1. Người dùng chọn “Đăng nhập”
+2. Hệ thống hiển thị form nhập thông tin
+3. Người dùng nhập tài khoản, mật khẩu và nhấn nút “Đăng nhập”
+4. Hệ thống kiểm tra tính hợp lệ và đối chiếu cơ sở dữ liệu
+5. Hệ thống xác định vai trò và cấp quyền truy cập vào màn hình chínhLuồng sự kiện phụ1. Thông tin không đầy đủ: hệ thống yêu cầu nhập lại
+2. Sai tài khoản hoặc mật khẩu: hệ thống thông báo lỗi
+3. Tài khoản bị khoá: hệ thống yêu cầu liên hệ quản trị viên
+4. Quên mật khẩu: chuyển sang quy trình khôi phục tài khoản
+2.4.2. Đặc tả use case tạo đơn hàng
+MụcNội dung chi tiếtMã use caseUC-02Tên use caseTạo đơn hàngTác nhân chínhKhách hàngMô tảKhách hàng thực hiện tạo đơn hàng mới thông qua việc cung cấp thông tin sản phẩm, địa chỉ nhận hàng và lựa chọn phương thức thanh toán phù hợpTiền điều kiệnNgười dùng đã thực hiện đăng nhập thành công vào hệ thốngHậu điều kiệnĐơn hàng mới được ghi nhận thành công vào cơ sở dữ liệu và đặt ở trạng thái chờ xử lýLuồng sự kiện chính1. Khách hàng chọn tính năng tạo đơn hàng trên giao diện
+2. Khách hàng nhập thông tin sản phẩm và địa chỉ chi tiết của người nhận hàng
+3. Khách hàng lựa chọn phương thức thanh toán và hệ thống tiến hành xác nhận, lưu trữ đơn hàngLuồng sự kiện phụTrong trường hợp khách hàng chưa chọn phương thức thanh toán, hệ thống sẽ thực hiện kiểm tra và hiển thị thông báo yêu cầu người dùng hoàn tất thông tin trước khi lưu đơn
+2.4.3. Đặc tả use case tra cứu đơn hàng
+MụcNội dung chi tiếtMã use caseUC-03Tên use caseTra cứu đơn hàngTác nhân chínhKhách hàngMô tảTính năng cho phép người dùng tìm kiếm và theo dõi các thông tin chi tiết, lộ trình và trạng thái xử lý hiện tại của các vận đơn đã đặtTiền điều kiệnKhách hàng đã thực hiện đăng nhập vào hệ thống và tài khoản đã tồn tại ít nhất một đơn hàng trong lịch sửHậu điều kiệnHệ thống truy xuất dữ liệu thành công và hiển thị đầy đủ các thông số chi tiết kèm trạng thái thực tế của đơn hàng cho người dùngLuồng sự kiện chínhNgười dùng chọn tính năng “Tra cứu đơn hàng” trên giao diện chính, sau đó thực hiện nhập mã vận đơn hoặc lựa chọn đơn hàng trực tiếp từ danh sách lịch sử. Hệ thống tiến hành kiểm tra thông tin trong cơ sở dữ liệu để hiển thị các nội dung chi tiết về sản phẩm, thông tin người nhận, số tiền thu hộ và trạng thái vận chuyển tương ứngLuồng sự kiện phụTrong trường hợp mã vận đơn nhập vào không tồn tại, hệ thống sẽ hiển thị thông báo lỗi cho người dùng. Đối với các đơn hàng chưa chuyển sang trạng thái “Đang giao”, khách hàng có thể lựa chọn chức năng huỷ đơn để hệ thống chuyển hướng sang quy trình xử lý huỷ đơn tương ứng
+2.4.4. Đặc tả use case nhận đơn hàng
+MụcNội dung chi tiếtMã use caseUC-04Tên use caseNhận đơn hàngTác nhân chínhNhân viên giao hàngMô tảChức năng này hỗ trợ nhân viên giao hàng xem xét danh sách các đơn mới được hệ thống phân bổ và thực hiện xác nhận tiếp nhận để bắt đầu quy trình vận chuyển đến khách hàngTiền điều kiệnNhân viên giao hàng đã đăng nhập thành công vào ứng dụng và tài khoản đang ở trạng thái hoạt động. Đồng thời, phải có ít nhất một đơn hàng ở trạng thái chờ xử lý được phân công cho nhân viên nàyHậu điều kiệnHệ thống cập nhật trạng thái đơn hàng sang "đang giao" (hoặc trạng thái tương ứng), ghi nhận thời gian nhận đơn vào cơ sở dữ liệu và gửi thông báo hành trình đến khách hàngLuồng sự kiện chính1. Tại giao diện làm việc chính, nhân viên chọn chức năng "nhận đơn hàng"
+2. Hệ thống truy vấn cơ sở dữ liệu và hiển thị danh sách các đơn hàng mới cần xử lý
+3. Nhân viên chọn một đơn hàng cụ thể từ danh sách để kiểm tra thông tin
+4. Hệ thống hiển thị chi tiết về người nhận, địa chỉ giao và số tiền thu hộ (COD)
+5. Sau khi xem xét, nhân viên nhấn nút "xác nhận nhận đơn"
+6. Hệ thống kiểm tra tính hợp lệ và cập nhật trạng thái đơn hàng
+7. Hệ thống gửi thông báo xác nhận đến ứng dụng của khách hàng và hiển thị thông báo thành công cho nhân viênLuồng sự kiện phụ1. Danh sách trống: nếu không có đơn hàng nào được phân công, hệ thống hiển thị thông báo "hiện chưa có đơn hàng mới" 
+2. Đơn hàng không còn khả dụng: nếu đơn hàng đã bị hủy hoặc điều phối lại cho người khác trong quá trình xem, hệ thống báo lỗi và tự động làm mới danh sách 
+3. Hủy thao tác: nhân viên nhấn nút "quay lại" hoặc "đóng" tại màn hình chi tiết, hệ thống giữ nguyên trạng thái đơn hàng và quay về danh sách ban đầu
+2.4.5. Đặc tả use case cập nhật trạng thái đơn hàng
+MụcNội dung chi tiếtMã use caseUC-05Tên use caseCập nhật trạng thái đơn hàngTác nhân chínhNhân viên giao hàngMô tảChức năng cho phép nhân viên giao hàng thay đổi trạng thái hiện tại của đơn hàng (ví dụ: đang giao, giao thành công, giao thất bại) để hệ thống ghi nhận tiến độ và gửi thông báo cập nhật đến khách hàngTiền điều kiệnNhân viên giao hàng đã đăng nhập vào hệ thống và đơn hàng cần cập nhật đã được phân công cho nhân viên này (đang ở trong danh sách "Đơn đã nhận")Hậu điều kiệnTrạng thái mới của đơn hàng được lưu vào cơ sở dữ liệu, lịch sử thay đổi được ghi lại và hệ thống tự động gửi thông báo trạng thái mới đến ứng dụng của khách hàngLuồng sự kiện chính1. Nhân viên truy cập vào danh sách các đơn hàng đã nhận và chọn chức năng "Cập nhật trạng thái" đối với một đơn hàng cụ thể 
+2. Hệ thống hiển thị giao diện cập nhật với thông tin tóm tắt và trạng thái hiện tại của đơn hàng 
+3. Nhân viên lựa chọn trạng thái mới từ danh sách (Đang giao, Đã giao, Giao thất bại,...) và nhập ghi chú bổ sung nếu cần thiết 
+4. Nhân viên nhấn nút "Lưu cập nhật" 
+5. Hệ thống kiểm tra tính hợp lệ của dữ liệu và thực hiện lưu trạng thái mới vào cơ sở dữ liệu 
+6. Hệ thống gửi thông báo xác nhận cập nhật thành công cho nhân viên, đồng thời gửi thông báo tiến độ cho khách hàngLuồng sự kiện phụ1. Thiếu thông tin bắt buộc: Nếu trạng thái là "Giao thất bại" hoặc "Hủy" mà nhân viên không nhập lý do/ghi chú, hệ thống sẽ yêu cầu bổ sung thông tin trước khi lưu 
+2. Lỗi hệ thống: Trong quá trình lưu, nếu xảy ra lỗi kết nối hoặc lỗi dữ liệu, hệ thống sẽ hiển thị thông báo "Cập nhật thất bại" và yêu cầu nhân viên thử lại sau
+2.4.6. Đặc tả use case xem lịch sử giao hàng
+MụcNội dung chi tiếtMã use caseUC-06Tên use caseXem lịch sử giao hàngTác nhân chínhNhân viên giao hàngMô tảChức năng này hỗ trợ nhân viên giao hàng tra cứu lại các đơn hàng đã thực hiện, cho phép lọc theo thời gian hoặc trạng thái và xuất báo cáo thống kê hoạt độngTiền điều kiệnNhân viên giao hàng đã đăng nhập thành công vào hệ thốngHậu điều kiệnHệ thống hiển thị danh sách các đơn hàng theo tiêu chí lọc hoặc xuất thành công file báo cáo (Excel/PDF) về thiết bị của nhân viênLuồng sự kiện chính1. Tại giao diện chính, nhân viên chọn chức năng "Lịch sử giao hàng" 
+2. Hệ thống truy xuất và hiển thị danh sách các đơn hàng đã xử lý (mặc định hiển thị các đơn gần nhất) 
+3. Nhân viên thiết lập bộ lọc tùy chỉnh (chọn khoảng thời gian, trạng thái đơn hàng...) và nhấn "Áp dụng" 
+4. Hệ thống xử lý yêu cầu, truy vấn cơ sở dữ liệu và trả về danh sách kết quả phù hợp kèm số liệu thống kê tổng quan 
+5. Nhân viên chọn xem chi tiết một đơn hàng cụ thể để kiểm tra thông tin 
+6. Nhân viên có thể chọn chức năng "Xuất báo cáo" để tải về file tổng hợp hoạt độngLuồng sự kiện phụ1. Không tìm thấy dữ liệu: nếu bộ lọc không trả về kết quả nào, hệ thống thông báo "Không có dữ liệu phù hợp" 
+2. Lỗi xuất báo cáo: trong trường hợp quá trình tạo file báo cáo bị lỗi, hệ thống hiển thị thông báo và yêu cầu thử lại sau
+2.4.7. Đặc tả use case quản lý khách hàng
+MụcNội dung chi tiếtMã use caseUC-07Tên use caseQuản lý khách hàngTác nhân chínhQuản lý (Admin)Mô tảChức năng này cho phép quản lý thực hiện các thao tác quản trị hồ sơ khách hàng bao gồm: tra cứu danh sách, thêm mới, cập nhật thông tin cá nhân, và kiểm soát trạng thái tài khoản (khóa hoặc mở khóa)Tiền điều kiệnTài khoản quản lý đã đăng nhập thành công vào hệ thống quản trịHậu điều kiệnCác thay đổi về thông tin hoặc trạng thái khách hàng được cập nhật chính xác vào cơ sở dữ liệu và hệ thống ghi lại nhật ký hoạt động (log)Luồng sự kiện chính1. Tại giao diện quản trị, người dùng chọn module "Quản lý khách hàng" 
+2. Hệ thống truy xuất và hiển thị danh sách toàn bộ khách hàng hiện có 
+3. Quản lý sử dụng công cụ tìm kiếm hoặc bộ lọc để xác định hồ sơ khách hàng cần xử lý 
+4. Quản lý lựa chọn chức năng mong muốn (xem chi tiết, chỉnh sửa, khóa tài khoản...) 
+5. Hệ thống hiển thị biểu mẫu nhập liệu tương ứng hoặc hộp thoại xác nhận 
+6. Sau khi quản lý xác nhận thao tác, hệ thống kiểm tra tính hợp lệ của dữ liệu 
+7. Hệ thống thực hiện lưu thay đổi vào cơ sở dữ liệu và hiển thị thông báo thành côngLuồng sự kiện phụ1. Dữ liệu không hợp lệ: khi thêm mới hoặc cập nhật, nếu thông tin nhập vào bị thiếu hoặc sai định dạng (ví dụ: email sai, số điện thoại không đúng), hệ thống sẽ báo lỗi cụ thể và yêu cầu nhập lại 
+2. Không tìm thấy dữ liệu: trường hợp tìm kiếm không ra kết quả, hệ thống hiển thị thông báo "không tìm thấy khách hàng phù hợp"
+3. Hủy thao tác: quản lý có thể chọn nút "hủy bỏ" tại các biểu mẫu để quay lại danh sách ban đầu mà không lưu thay đổi
+2.4.8. Đặc tả use case quản lý nhân viên giao hàng
+MụcNội dung chi tiếtMã use caseUC-08Tên use caseQuản lý nhân viên giao hàngTác nhân chínhQuản lý (Admin)Mô tảChức năng này hỗ trợ người quản lý thực hiện các thao tác quản trị đội ngũ giao hàng, bao gồm: xem danh sách nhân sự, thêm hồ sơ nhân viên mới, cập nhật thông tin cá nhân và tạm ngưng hoạt động của tài khoản khi cần thiếtTiền điều kiệnTài khoản quản lý đã đăng nhập thành công vào hệ thốngHậu điều kiệnThông tin nhân viên mới hoặc các thay đổi về trạng thái/hồ sơ nhân viên được cập nhật lưu trữ vào cơ sở dữ liệu hệ thốngLuồng sự kiện chính1. Tại giao diện quản trị, người dùng chọn chức năng "Quản lý nhân viên giao hàng" 
+2. Hệ thống truy xuất và hiển thị danh sách các nhân viên hiện có 
+3. Quản lý lựa chọn thao tác mong muốn: thêm mới, cập nhật hoặc tạm ngưng
+4. Hệ thống hiển thị biểu mẫu tương ứng (form nhập liệu hoặc hộp thoại xác nhận) 
+5. Quản lý nhập các thông tin cần thiết (như thông tin cá nhân hoặc lý do tạm ngưng hoạt động) và xác nhận 
+6. Hệ thống kiểm tra dữ liệu và thực hiện lưu thông tin vào cơ sở dữ liệu 
+7. Hệ thống hiển thị thông báo thành công và cập nhật lại danh sách hiển thịLuồng sự kiện phụ1. Dữ liệu thiếu hoặc sai: nếu thông tin nhập vào không đầy đủ hoặc sai định dạng, hệ thống hiển thị cảnh báo yêu cầu nhập lại
+2. Ghi nhận lý do tạm ngưng: đối với thao tác "tạm ngưng", hệ thống bắt buộc quản lý phải nhập lý do trước khi lưu để phục vụ việc ghi nhật ký (log) hoạt động 
+3. Hủy bỏ: quản lý chọn "hủy" hoặc "quay lại" để thoát khỏi biểu mẫu hiện tại mà không lưu thay đổi
+2.4.9. Đặc tả use case quản lý đơn hàng
+MụcNội dung chi tiếtMã use caseUC-09Tên use caseQuản lý đơn hàngTác nhân chínhQuản lý (Admin)Mô tảChức năng này cho phép người quản lý thực hiện các tác vụ điều phối và giám sát đơn hàng, bao gồm: xem chi tiết, phân công nhân viên giao hàng, cập nhật trạng thái vận chuyển và xử lý các khiếu nại phát sinh từ khách hàngTiền điều kiệnTài khoản quản lý đã đăng nhập thành công vào hệ thống quản trịHậu điều kiệnThông tin phân công, trạng thái đơn hàng hoặc kết quả xử lý khiếu nại được cập nhật và lưu trữ vào cơ sở dữ liệu hệ thốngLuồng sự kiện chính1. Tại giao diện quản trị, người dùng chọn chức năng "Quản lý đơn hàng" 
+2. Hệ thống truy xuất và hiển thị danh sách tất cả các đơn hàng trong hệ thống 
+3. Quản lý tìm kiếm và chọn một đơn hàng cụ thể để thực hiện thao tác 
+4. Hệ thống hiển thị các tùy chọn: xem chi tiết, phân công giao hàng, cập nhật trạng thái hoặc xử lý khiếu nại 
+5. Nếu chọn "Phân công": Quản lý chọn nhân viên giao hàng khả dụng từ danh sách và xác nhận 
+6. Nếu chọn "Cập nhật trạng thái": Quản lý thay đổi trạng thái đơn và lưu lại 
+7. Hệ thống kiểm tra dữ liệu, thực hiện lưu thay đổi và gửi thông báo cập nhật đến các bên liên quan (nhân viên giao hàng, khách hàng)Luồng sự kiện phụ1. Nhân viên không khả dụng: khi phân công, nếu không có nhân viên nào ở trạng thái sẵn sàng trong khu vực, hệ thống sẽ hiển thị cảnh báo
+2. Xử lý khiếu nại: trường hợp đơn hàng có phản hồi tiêu cực, quản lý nhập nội dung xử lý và lưu lại, hệ thống sẽ ghi nhận vào lịch sử đơn hàng 
+3. Lỗi dữ liệu: nếu quá trình lưu bị lỗi do mất kết nối, hệ thống thông báo "thao tác thất bại" và yêu cầu thử lại
+2.4.10. Đặc tả use case quản lý khuyến mãi
+MụcNội dung chi tiếtMã use caseUC-10Tên use caseQuản lý khuyến mãiTác nhân chínhQuản lý (Admin)Mô tảChức năng này hỗ trợ người quản lý thiết lập và kiểm soát các chương trình ưu đãi, bao gồm việc tạo mới mã giảm giá, chỉnh sửa nội dung hoặc ngưng hiệu lực các chương trình đã hết hạn để thúc đẩy hoạt động kinh doanhTiền điều kiệnTài khoản quản lý đã đăng nhập thành công vào hệ thống quản trịHậu điều kiệnCác thông tin về chương trình khuyến mãi (mới hoặc chỉnh sửa) được lưu trữ cập nhật vào cơ sở dữ liệu và sẵn sàng để áp dụng cho đơn hàngLuồng sự kiện chính1. Tại giao diện quản trị, người dùng chọn chức năng "Quản lý khuyến mãi" 
+2. Hệ thống truy xuất và hiển thị danh sách các chương trình khuyến mãi hiện có (có thể lọc theo trạng thái hoặc thời gian) 
+3. Quản lý chọn thao tác mong muốn: "Tạo mới" hoặc chọn một khuyến mãi cụ thể để "Cập nhật" 
+4. Hệ thống hiển thị biểu mẫu nhập liệu chi tiết (tên chương trình, mã code, giá trị giảm, điều kiện áp dụng, thời gian hiệu lực) 
+5. Quản lý điền hoặc chỉnh sửa thông tin và nhấn nút lưu 
+6. Hệ thống kiểm tra tính hợp lệ của dữ liệu (ví dụ: ngày kết thúc phải sau ngày bắt đầu, mã không trùng lặp) 
+7. Hệ thống lưu thông tin vào cơ sở dữ liệu và hiển thị thông báo thành côngLuồng sự kiện phụ1. Dữ liệu không hợp lệ: nếu thời gian thiết lập không logic hoặc mã khuyến mãi đã tồn tại, hệ thống báo lỗi và yêu cầu nhập lại 
+2. Ngưng hoạt động: quản lý có thể chọn nút "Ngưng" hoặc "Xóa" đối với các chương trình muốn dừng sớm, hệ thống sẽ yêu cầu xác nhận trước khi cập nhật trạng thái 
+3. Hủy thao tác: quản lý chọn "Quay lại" để hủy bỏ quá trình nhập liệu hiện tại
+2.4.11. Đặc tả use case thống kê
+MụcNội dung chi tiếtMã use caseUC-11Tên use caseThống kêTác nhân chínhQuản lý (Admin)Mô tảChức năng này hỗ trợ người quản lý tổng hợp và theo dõi các chỉ số hoạt động kinh doanh của hệ thống, bao gồm doanh thu, số lượng đơn hàng, hiệu suất giao hàng và tình hình hoạt động theo khu vực hoặc thời gian thựcTiền điều kiệnTài khoản quản lý đã đăng nhập thành công vào hệ thống quản trịHậu điều kiệnHệ thống hiển thị các biểu đồ, bảng số liệu chính xác theo tiêu chí lọc hoặc xuất thành công file báo cáo về thiết bịLuồng sự kiện chính1. Tại giao diện quản trị, người dùng chọn chức năng "Thống kê" 
+2. Hệ thống tự động cập nhật và hiển thị bảng thông tin tổng quan (dashboard) với các dữ liệu mới nhất 
+3. Quản lý thiết lập các tiêu chí thống kê mong muốn (chọn loại báo cáo: doanh thu/hiệu suất, chọn khoảng thời gian, chọn khu vực...) và nhấn áp dụng 
+4. Hệ thống truy vấn dữ liệu, xử lý và hiển thị kết quả dưới dạng biểu đồ hoặc danh sách chi tiết 
+5. Quản lý có thể chọn xem chi tiết từng mục cụ thể 
+6. Quản lý nhấn nút "Xuất báo cáo" để tải về file lưu trữ (Excel hoặc PDF)Luồng sự kiện phụ1. Không có dữ liệu: nếu bộ lọc không tìm thấy kết quả nào phù hợp trong cơ sở dữ liệu, hệ thống sẽ hiển thị thông báo "không có dữ liệu" 
+2. Lỗi xuất file: trong trường hợp quá trình tạo file báo cáo gặp sự cố kỹ thuật, hệ thống báo lỗi và yêu cầu người dùng thực hiện lại thao tác
+2.4.12. Đặc tả use case quản lý tài khoản cá nhân
+MụcNội dung chi tiếtMã use caseUC-12Tên use caseQuản lý tài khoản cá nhânTác nhân chínhNgười dùng (bao gồm Khách hàng, Nhân viên giao hàng, Quản lý)Mô tảChức năng này cho phép người dùng xem và chỉnh sửa thông tin hồ sơ cá nhân (họ tên, số điện thoại, ảnh đại diện), thực hiện thay đổi mật khẩu đăng nhập và quản lý danh sách địa chỉ giao nhận hàng (đối với khách hàng)Tiền điều kiệnNgười dùng đã đăng nhập thành công vào hệ thốngHậu điều kiệnCác thay đổi về thông tin cá nhân, mật khẩu hoặc địa chỉ được cập nhật và lưu trữ thành công vào cơ sở dữ liệu hệ thốngLuồng sự kiện chính1. Tại giao diện chính, người dùng chọn mục "Hồ sơ cá nhân" hoặc "Tài khoản"
+2. Hệ thống hiển thị thông tin chi tiết hiện tại của tài khoản
+3. Người dùng lựa chọn thao tác mong muốn: "Cập nhật thông tin", "Đổi mật khẩu" hoặc "Quản lý địa chỉ"
+4. Hệ thống hiển thị biểu mẫu tương ứng cho từng tác vụ
+5. Người dùng nhập thông tin mới (ví dụ: mật khẩu cũ và mật khẩu mới, hoặc địa chỉ mới) và nhấn lưu
+6. Hệ thống kiểm tra tính hợp lệ của dữ liệu (xác thực mật khẩu cũ, định dạng số điện thoại...) 
+7. Hệ thống lưu thay đổi và hiển thị thông báo cập nhật thành côngLuồng sự kiện phụ1. Sai thông tin xác thực: trường hợp đổi mật khẩu, nếu người dùng nhập sai mật khẩu cũ, hệ thống báo lỗi và yêu cầu nhập lại
+2. Dữ liệu không hợp lệ: nếu thông tin nhập vào bị thiếu hoặc sai định dạng, hệ thống sẽ hiển thị cảnh báo tại các trường tương ứng
+3. Hủy thao tác: người dùng chọn "Hủy" để quay lại màn hình thông tin mà không lưu các thay đổi
+2.5. Sơ đồ hoạt động
+2.5.1. Sơ đồ hoạt động đăng nhập hệ thống
+
+2.5.2. Sơ đồ hoạt động tạo đơn hàng
+
+2.5.3. Sơ đồ hoạt động tra cứu đơn hàng
+
+2.5.4. Sơ đồ hoạt động nhận đơn hàng
+
+2.5.5. Sơ đồ hoạt động cập nhật trạng thái đơn hàng
+
+2.5.6. Sơ đồ hoạt động xem lịch sử giao hàng
+
+2.5.7. Sơ đồ hoạt động quản lý khách hàng
+
+2.5.8. Sơ đồ hoạt động quản lý nhân viên giao hàng
+
+2.5.9. Sơ đồ hoạt động quản lý đơn hàng
+
+2.5.10. Sơ đồ hoạt động quản lý khuyến mãi
+
+2.5.11. Sơ đồ hoạt động thống kê
+
+2.5.12. Sơ đồ hoạt động quản lý tài khoản cá nhân
+
+2.6. Sơ đồ lớp
+
+
+
+CHƯƠNG 3: THIẾT KẾ HỆ THỐNG
+3.1. Thiết kế giao diện trang chủ hệ thống
+Giao diện trang chủ (landing page) đóng vai trò là điểm tiếp xúc đầu tiên giữa người dùng và hệ thống quản lý giao hàng. Mục tiêu thiết kế của giao diện này là đảm bảo tính trực quan, thân thiện và thể hiện rõ ràng các giá trị cốt lõi của dịch vụ. Tại màn hình này, hệ thống cung cấp cái nhìn tổng quan về các tiện ích chính mà người dùng có thể trải nghiệm, nổi bật nhất là dịch vụ giao hàng hoạt động liên tục 24/7, chế độ bảo hiểm toàn diện cho hàng hóa và khả năng theo dõi vị trí đơn hàng theo thời gian thực.
+Về mặt bố cục, trang chủ được thiết kế phân chia thành hai khu vực chính nhằm tạo sự cân đối và tập trung thị giác. Phía bên trái giao diện sử dụng hình ảnh minh họa phương tiện vận chuyển chuyên nghiệp kết hợp với các biểu tượng đại diện cho các tính năng nổi bật, giúp người dùng nhanh chóng nắm bắt được ưu điểm của hệ thống ngay khi truy cập.
+Phía bên phải là khu vực tương tác dành cho việc xác thực người dùng. Hệ thống thiết kế các thẻ chuyển đổi linh hoạt giữa ba vai trò chính là khách hàng, nhân viên giao hàng và quản lý. Cách bố trí này giúp phân luồng người dùng ngay từ bước đầu, đảm bảo họ được chuyển hướng đến không gian làm việc phù hợp với quyền hạn của mình. Các trường nhập liệu như email, mật khẩu cùng các nút chức năng đăng nhập, đăng ký hoặc khôi phục mật khẩu được bố trí rõ ràng với màu sắc tương phản, hỗ trợ người dùng thao tác nhanh chóng và thuận tiện.
+3.2. Giao diện màn hình các chức năng
+
+
+CHƯƠNG 4: TỔNG KẾT
+4.1. Kết quả đạt được
+Thông qua quá trình nghiên cứu và thực hiện đề tài, nhóm đã hoàn thành việc xây dựng hồ sơ phân tích và thiết kế chi tiết cho hệ thống quản lý giao nhận hàng. Kết quả này là lời giải cụ thể cho bài toán khắc phục các nhược điểm của quy trình quản lý thủ công, rời rạc hiện tại, đồng thời tạo ra một nền tảng số hóa giúp lưu thông tin xuyên suốt giữa ba đối tượng chính là quản lý, nhân viên giao hàng và khách hàng.
+Về mặt kỹ thuật, kết quả quan trọng nhất đạt được là bộ tài liệu thiết kế hệ thống tuân thủ chặt chẽ phương pháp phân tích thiết kế hướng đối tượng với ngôn ngữ chuẩn UML. Hệ thống đã được mô hình hóa toàn diện từ mức tổng quát đến chi tiết, bao gồm hệ thống sơ đồ Use case giúp xác định rõ ràng phạm vi chức năng và quyền hạn của từng tác nhân. Bên cạnh đó, cấu trúc dữ liệu và logic xử lý nghiệp vụ cũng được thiết lập vững chắc thông qua các sơ đồ Lớp (Class diagram), sơ đồ Hoạt động (Activity diagram) và sơ đồ Tuần tự (Sequence diagram), đảm bảo tính logic và khả năng mở rộng của hệ thống trong tương lai.
+Về mặt chức năng, hệ thống được thiết kế đã đáp ứng đầy đủ các yêu cầu nghiệp vụ đặt ra ban đầu. Cụ thể, thiết kế đã cung cấp các công cụ đắc lực cho người quản lý trong việc điều phối đơn hàng và giám sát hiệu suất nhân viên; hỗ trợ nhân viên giao hàng cập nhật trạng thái đơn hàng nhanh chóng theo thời gian thực; và đặc biệt là mang lại sự minh bạch cho khách hàng thông qua tính năng tự tra cứu hành trình vận chuyển. Những kết quả này không chỉ giúp giảm thiểu tối đa sai sót trong khâu nhập liệu thủ công mà còn là cơ sở vững chắc để phát triển ứng dụng thực tế, giúp doanh nghiệp tối ưu hóa chi phí vận hành và nâng cao chất lượng dịch vụ.
+4.2. Ưu điểm và hạn chế của hệ thống
+4.2.1. Ưu điểm
+Hệ thống quản lý giao nhận hàng được xây dựng đã giải quyết được cơ bản các vấn đề tồn đọng trong quy trình quản lý thủ công trước đây. Ưu điểm lớn nhất là khả năng quản lý tập trung và đồng bộ dữ liệu. Thay vì lưu trữ rời rạc trên giấy tờ hay bảng tính Excel, mọi thông tin về đơn hàng, khách hàng và nhân viên đều được chuẩn hóa vào cơ sở dữ liệu duy nhất. Điều này giúp người quản lý dễ dàng tra cứu, giám sát hoạt động kinh doanh và trích xuất báo cáo doanh thu chính xác theo thời gian thực mà không tốn nhiều công sức tổng hợp.
+Về mặt trải nghiệm người dùng, giao diện của hệ thống được thiết kế theo hướng hiện đại, tối giản và thân thiện. Các luồng chức năng như tạo đơn, cập nhật trạng thái hay tra cứu hành trình được bố trí logic, giúp người dùng mới dễ dàng tiếp cận mà không cần qua đào tạo phức tạp. Đặc biệt, chức năng dành cho khách hàng đã đáp ứng tốt nhu cầu minh bạch thông tin, cho phép họ tự chủ động theo dõi đơn hàng của mình, từ đó giảm tải áp lực hỗ trợ cho bộ phận chăm sóc khách hàng.
+4.2.2. Hạn chế
+Bên cạnh những kết quả đạt được, do giới hạn về thời gian và kiến thức công nghệ, hệ thống vẫn còn tồn tại một số hạn chế nhất định. Về mặt tính năng, hệ thống hiện tại mới chỉ dừng lại ở việc mô phỏng quy trình thanh toán chứ chưa tích hợp được các cổng thanh toán trực tuyến thực tế (như MoMo, VNPay hay thẻ Visa) để xử lý giao dịch tự động. Ngoài ra, tính năng gợi ý lộ trình giao hàng tối ưu cho nhân viên vẫn chưa được phát triển, hiện tại việc sắp xếp lộ trình vẫn phụ thuộc hoàn toàn vào kinh nghiệm của người giao hàng.
+Về mặt kỹ thuật, hệ thống chưa được kiểm thử tải với lượng dữ liệu lớn, do đó hiệu suất hoạt động khi có hàng nghìn truy cập cùng lúc vẫn là một bài toán cần xem xét. Phiên bản hiện tại được thiết kế chủ yếu trên nền tảng web, chưa có ứng dụng di động (Mobile App) riêng biệt (native app) để tận dụng tối đa các tính năng của điện thoại như định vị GPS theo thời gian thực hay quét mã vạch bằng camera, điều này phần nào làm giảm tính linh hoạt của nhân viên giao hàng khi tác nghiệp tại hiện trường.
+4.3. Hướng phát triển hệ thống
+Để khắc phục những hạn chế còn tồn đọng và nâng cao tính ứng dụng thực tiễn, nhóm thực hiện đề tài đề xuất một số định hướng phát triển cụ thể trong tương lai. Ưu tiên hàng đầu là việc xây dựng và phát triển ứng dụng di động (Mobile App) đa nền tảng trên Android và iOS. Ứng dụng này sẽ được thiết kế chuyên biệt cho nhân viên giao hàng, tận dụng các tính năng của điện thoại thông minh như định vị GPS để cập nhật vị trí theo thời gian thực, hoặc sử dụng camera để quét mã vạch đơn hàng, giúp quy trình cập nhật trạng thái diễn ra nhanh chóng và chính xác hơn ngay tại hiện trường giao nhận.
+Về mặt nghiệp vụ, hệ thống sẽ được nâng cấp để tích hợp các cổng thanh toán trực tuyến phổ biến hiện nay như MoMo, ZaloPay hoặc VNPay. Việc này nhằm giảm thiểu rủi ro trong việc quản lý tiền mặt của hình thức thu hộ (COD), đồng thời mang lại sự tiện lợi và đa dạng hóa lựa chọn thanh toán cho khách hàng. Bên cạnh đó, nhóm cũng định hướng nghiên cứu áp dụng các thuật toán tối ưu hóa và trí tuệ nhân tạo (AI) để giải quyết bài toán gợi ý lộ trình giao hàng. Hệ thống sẽ tự động tính toán và đề xuất quãng đường ngắn nhất cho shipper dựa trên danh sách đơn hàng và tình hình giao thông, từ đó tiết kiệm nhiên liệu và rút ngắn thời gian giao hàng.
+
+
+
+2
+
+
+
+
+
+2
+
+

@@ -1,0 +1,17 @@
+GV: [email đã ẩn]
+Quy định làm và nộp bài Elearning
+Sinh viên làm bài Elearning theo định dạng này:
+
+Điền đầy đủ thông tin cá nhân hoặc nhóm làm bài trên file Word.
+Ghi lại đề bài.
+Nếu kết quả làm bài ở định dạng khác phải chuyển sang ảnh hoặc text vào file này.
+Sau khi làm bài chuyển sang định dạng PDF để nộp bài.
+Nếu làm nhóm thì chỉ 1 em đại diện nộp.
+Khác định dạng bài nộp hay điền không đầy đủ hoặc sai thông tin coi như không nộp bài.
+Công thức tính điểm
+Điểm Quá trình = 10%Attendance + 18%(EL01 + EL02 + EL03 + EL04 + EL05) và chia tỷ lệ cho các bài VPL.
+Final Test: Bài làm cuối kỳ và vấn đáp theo nhóm (chỉ được sử dụng tài liệu giấy).
+Course Total = 50%(Điểm Quá trình) + 50%(Final Test).
+Điều kiện để được đánh giá cuối kỳ là điểm Attendance phải >= 7đ.
+Ngoài ra nếu có hiệu chỉnh điểm nào đó sẽ có thêm cột hiệu chỉnh tương ứng bên cạnh cột điểm gốc.
+Sau báo cáo Final Test 1 tuần: Các em chủ động xem điểm và phản hồi cho gv nếu có trong 1 tuần tiếp theo, sau đó sẽ chốt và import lên Portal (hết khiếu nại !!).

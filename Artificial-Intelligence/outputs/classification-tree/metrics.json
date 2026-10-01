@@ -1,0 +1,53 @@
+{
+  "dataset": "Iris (scikit-learn load_iris)",
+  "source_evidence": "AI-Ex-2027.pdf, trang 19, mục 7.3",
+  "random_state": 42,
+  "test_size": 0.3,
+  "train_samples": 105,
+  "test_samples": 45,
+  "feature_count": 4,
+  "class_names": [
+    "setosa",
+    "versicolor",
+    "virginica"
+  ],
+  "class_counts": {
+    "setosa": 50,
+    "versicolor": 50,
+    "virginica": 50
+  },
+  "missing_values": 0,
+  "duplicate_rows_with_target": 1,
+  "cv_folds": 5,
+  "cv_scoring": "f1_macro",
+  "best_cv_f1_macro": 0.9523321123321123,
+  "best_params": {
+    "criterion": "gini",
+    "max_depth": 3,
+    "min_samples_leaf": 4,
+    "min_samples_split": 2
+  },
+  "test_metrics": {
+    "accuracy": 0.8888888888888888,
+    "precision_macro": 0.8898809523809524,
+    "recall_macro": 0.888888888888889,
+    "f1_macro": 0.8887652947719689
+  },
+  "confusion_matrix": [
+    [
+      15,
+      0,
+      0
+    ],
+    [
+      0,
+      12,
+      3
+    ],
+    [
+      0,
+      2,
+      13
+    ]
+  ]
+}

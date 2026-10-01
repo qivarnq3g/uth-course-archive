@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="UDPChat41_Client/UDPChat41_Client.csproj" />
+  <Project Path="UDPChat41_Server/UDPChat41_Server.csproj" />
+</Solution>

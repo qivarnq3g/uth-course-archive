@@ -1,0 +1,138 @@
+% Compile: pdflatex main.tex
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage{lmodern}
+\usepackage[top=2cm,bottom=2cm,left=2.5cm,right=2cm]{geometry}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usetikzlibrary{calc}
+
+\setlength{\parindent}{0pt}
+
+\begin{document}
+
+\begin{center}
+  \textbf{\large KIỂM TRA GIỮA KỲ -- MA TRẬN BCG NĂM 2022}
+\end{center}
+
+\textbf{Họ và tên: Hoàng Việt Quang} \hfill \textbf{MSSV: 066206005044}
+
+\bigskip
+
+Thay xx~=~22, yy~=~44. Tổng doanh số 2022: $122+175+144+122+144=\mathbf{707}$ (nghìn USD).
+
+\[
+MGR=\frac{DS_{2022}-DS_{2021}}{DS_{2021}}\!\times\!100\%,\quad
+RMS=\frac{DS_{2022}}{DS_{\text{đối thủ lớn nhất}}},\quad
+P=\frac{DS_{2022}}{707}\!\times\!100\%
+\]
+
+\begin{center}
+\begin{tabular}{|c|r|r|r|r|r|r|l|}
+\hline
+SP & DS 2021 & DS 2022 & Đối thủ & $MGR(\%)$ & $RMS$ & $P(\%)$ & Phân loại \\
+\hline
+A & 100 & 122 & 100 & $+22{,}00$ & $1{,}22$ & $17{,}25$ & Ngôi sao \\
+\hline
+B & 150 & 175 &  45 & $+16{,}67$ & $3{,}89$ & $24{,}75$ & Ngôi sao \\
+\hline
+C &  95 & 144 &  60 & $+51{,}58$ & $2{,}40$ & $20{,}37$ & Ngôi sao \\
+\hline
+D & 140 & 122 & 200 & $-12{,}86$ & $0{,}61$ & $17{,}25$ & Chó \\
+\hline
+E & 120 & 144 & 120 & $+20{,}00$ & $1{,}20$ & $20{,}37$ & Ngôi sao \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{center}
+% x=1.6cm per RMS unit, y=0.09cm per MGR% unit
+% Range: RMS [0,5], MGR [-20,60]
+% Dividers: RMS=1 (x=1), MGR=10% (y=10)
+% r proportional to sqrt(P), r_max=0.32cm for B (P=24.75)
+%   A: r=0.32*sqrt(17.25/24.75)=0.267cm
+%   B: r=0.32cm
+%   C: r=0.32*sqrt(20.37/24.75)=0.290cm
+%   D: r=0.267cm
+%   E: r=0.290cm
+% A(1.22,22) and E(1.20,20) overlap -> nudge both slightly within Star
+%   A drawn at (1.45,23.5), E drawn at (1.28,18.8)
+\begin{tikzpicture}[x=1.6cm, y=0.09cm]
+
+  %% Quadrant fills
+  \fill[yellow!20]  (1,10) rectangle (5,60);   % Star
+  \fill[cyan!10]    (1,-20) rectangle (5,10);  % Cash Cow
+  \fill[orange!15]  (0,10) rectangle (1,60);   % Question Mark
+  \fill[red!12]     (0,-20) rectangle (1,10);  % Dog
+
+  %% Axes
+  \draw[very thick] (0,-20) -- (0,60);
+  \draw[very thick] (0,0) -- (5,0);
+
+  %% Dividers
+  \draw[very thick, red!75!black] (1,-20) -- (1,60);
+  \draw[very thick, red!75!black] (0,10)  -- (5,10);
+
+  %% Y ticks
+  \foreach \y in {-20,-10,0,10,20,30,40,50,60}{
+    \draw(-0.04,\y)--( 0,\y);
+    \node[left,font=\scriptsize] at (-0.05,\y) {\y\%};
+  }
+
+  %% X ticks
+  \foreach \x in {0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5}{
+    \draw(\x,0.8)--(\x,-0.8);
+    \node[below,font=\scriptsize] at (\x,-1.2) {\x};
+  }
+
+  %% Quadrant labels (all 4)
+  \node[font=\footnotesize\bfseries, text=orange!80!black]  at (3.0, 56) {NGÔI SAO};
+  \node[font=\footnotesize\bfseries, text=cyan!60!black]    at (3.0, -16) {BÒ SỮA};
+  \node[font=\footnotesize\bfseries, text=orange!70!black]  at (0.5, 56) {DẤU HỎI};
+  \node[font=\footnotesize\bfseries, text=red!70!black]     at (0.5,-18) {CHÓ};
+
+  %% SBU circles
+  % A: true (1.22,22), drawn nudged to (1.45,23.5)
+  \filldraw[fill=yellow!75!orange, draw=orange!80!black, line width=0.7pt]
+    (1.45, 23.5) circle (0.267cm);
+  \node[font=\scriptsize\bfseries] at (1.45, 23.5) {A};
+
+  % B: (3.89,16.67)
+  \filldraw[fill=yellow!75!orange, draw=orange!80!black, line width=0.7pt]
+    (3.89, 16.67) circle (0.32cm);
+  \node[font=\scriptsize\bfseries] at (3.89, 16.67) {B};
+
+  % C: (2.40,51.58)
+  \filldraw[fill=yellow!75!orange, draw=orange!80!black, line width=0.7pt]
+    (2.40, 51.58) circle (0.29cm);
+  \node[font=\scriptsize\bfseries] at (2.40, 51.58) {C};
+
+  % D: (0.61,-12.86)
+  \filldraw[fill=red!65!white, draw=red!80!black, line width=0.7pt]
+    (0.61,-12.86) circle (0.267cm);
+  \node[font=\scriptsize\bfseries, text=white] at (0.61,-12.86) {D};
+
+  % E: true (1.20,20), drawn nudged to (1.28,18.8)
+  \filldraw[fill=yellow!75!orange, draw=orange!80!black, line width=0.7pt]
+    (1.28, 18.8) circle (0.29cm);
+  \node[font=\scriptsize\bfseries] at (1.28, 18.8) {E};
+
+  %% Axis titles
+  \node[above, font=\small\bfseries] at (0,62) {Tăng trưởng thị trường MGR (\%)};
+  \node[right, font=\small\bfseries] at (5.1,0) {RMS};
+
+\end{tikzpicture}
+\end{center}
+
+\medskip
+
+\textbf{Kết luận:}
+\begin{itemize}
+  \item \textbf{Ngôi sao -- A, B, C, E:} MGR $>10\%$, RMS $>1$. Chiến lược: tiếp tục đầu tư, mở rộng thị phần.
+  \item \textbf{Chó -- D:} MGR $=-12{,}86\%$, RMS $=0{,}61$. Chiến lược: thoái vốn, ngừng đầu tư.
+\end{itemize}
+
+\end{document}

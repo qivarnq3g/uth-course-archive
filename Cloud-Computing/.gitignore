@@ -1,0 +1,40 @@
+# Agent scratch space — disposable by contract, never committed
+scratch/
+.scratch/
+*.tmp
+*.scratch.*
+
+# Agent-local state and per-machine configuration
+.claude/settings.local.json
+.codex/
+.antigravity/
+.cursor/
+
+# Secrets — an agent must never stage these
+.env
+.env.*
+!.env.example
+secrets/
+*.key
+*.pem
+*.pfx
+
+# Build and cache output
+dist/
+build/
+out/
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# OS artifacts
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# BOOTSTRAP: append language- and framework-specific entries for this project

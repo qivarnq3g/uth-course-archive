@@ -1,0 +1,48 @@
+{
+  "source_evidence": "AI-Ex-2027.pdf, trang 18, mục 7.1",
+  "max_depth": 3,
+  "random_state": 42,
+  "evaluation_note": "Metric chỉ đo độ khớp trên toàn bộ toy data; không phải test/generalization metric.",
+  "cases": [
+    {
+      "case": 1,
+      "samples": 4,
+      "features": 1,
+      "tree_depth": 2,
+      "leaf_count": 4,
+      "train_mae": 0.0,
+      "train_rmse": 0.0,
+      "train_r2": 1.0
+    },
+    {
+      "case": 2,
+      "samples": 5,
+      "features": 1,
+      "tree_depth": 3,
+      "leaf_count": 5,
+      "train_mae": 0.0,
+      "train_rmse": 0.0,
+      "train_r2": 1.0
+    },
+    {
+      "case": 3,
+      "samples": 5,
+      "features": 2,
+      "tree_depth": 3,
+      "leaf_count": 5,
+      "train_mae": 0.0,
+      "train_rmse": 0.0,
+      "train_r2": 1.0
+    },
+    {
+      "case": 4,
+      "samples": 3,
+      "features": 3,
+      "tree_depth": 2,
+      "leaf_count": 3,
+      "train_mae": 0.0,
+      "train_rmse": 0.0,
+      "train_r2": 1.0
+    }
+  ]
+}

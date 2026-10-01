@@ -1,0 +1,2256 @@
+App.xaml.cpp:
+<code>
+#include "pch.h"
+#include "App.xaml.h"
+#include "MainWindow.xaml.h"
+
+using namespace winrt;
+using namespace Microsoft::UI::Xaml;
+
+namespace winrt::DijkstraDeliverySystem::implementation
+{
+    App::App()
+    {
+#if defined _DEBUG && !defined DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION
+        UnhandledException([](IInspectable const&, UnhandledExceptionEventArgs const& e)
+        {
+            if (IsDebuggerPresent())
+            {
+                auto errorMessage = e.Message();
+                __debugbreak();
+            }
+        });
+#endif
+    }
+
+    void App::OnLaunched([[maybe_unused]] LaunchActivatedEventArgs const& e)
+    {
+        window = make<MainWindow>();
+        window.Activate();
+    }
+}
+
+</code>
+
+App.xaml.h:
+<code>
+#pragma once
+
+#include "App.xaml.g.h"
+
+namespace winrt::DijkstraDeliverySystem::implementation
+{
+    struct App : AppT<App>
+    {
+        App();
+
+        void OnLaunched(Microsoft::UI::Xaml::LaunchActivatedEventArgs const&);
+
+    private:
+        winrt::Microsoft::UI::Xaml::Window window{ nullptr };
+    };
+}
+
+</code>
+
+COMPLEXITY_ANALYSIS.md:
+<code>
+# Dijkstra Complexity and Benchmark Notes
+
+## 1. Implemented Variants in This Project
+- Variant A: adjacency list + min-heap (`std::priority_queue`) in [DijkstraSolver.cpp](DijkstraSolver.cpp).
+- Variant B: adjacency matrix + linear scan in [DijkstraSolver.cpp](DijkstraSolver.cpp), with matrix representation in [MatrixGraph.h](MatrixGraph.h) and [MatrixGraph.cpp](MatrixGraph.cpp).
+- Both variants are executed for the same input and cross-checked for distance consistency.
+
+## 2. Problem Constraints
+- Let $V$ be number of vertices and $E$ number of edges.
+- All edge weights are strictly positive (validated in [Graph.cpp](Graph.cpp)).
+- Goal: shortest path from one source to one target.
+
+## 3. Theoretical Complexity by Graph Structure
+
+| Variant | Data structure | Time (single run) | Space (excluding UI) | Best use case |
+|---|---|---|---|---|
+| A | Adjacency list + heap | $O((V + E) \log V)$ | $O(V + E)$ | Sparse graphs ($E$ close to $V$) |
+| B | Adjacency matrix + linear scan | $O(V^2)$ | $O(V^2)$ | Dense graphs or very small $V$ |
+
+Interpretation:
+- If graph is sparse, Variant A is usually faster and uses less memory.
+- If graph is dense ($E \approx V^2$), the time gap narrows and Variant B can be competitive for moderate sizes.
+
+## 4. Best / Average / Worst Perspective
+- Best case in this project: source equals target, immediate return ($O(1)$ fast path).
+- Average case: depends on graph density and edge distribution.
+- Worst case:
+  - Variant A: $O((V + E) \log V)$.
+  - Variant B: $O(V^2)$.
+
+## 5. Benchmark Method Implemented
+- Runtime measured with `std::chrono::high_resolution_clock`.
+- Both variants run `K` times (`K` from UI, default 30).
+- Metrics displayed in UI status:
+  - Best (min), average (mean), worst (max) in microseconds.
+- Cross-check status shown as `PASS` if both variants return same reachability and shortest distance.
+
+Benchmark complexity over `K` runs:
+- Variant A: $O(K * (V + E) \log V)$.
+- Variant B: $O(K * V^2)$.
+
+## 6. Objective Evaluation Checklist
+To claim full requirement coverage in presentation/report:
+1. Run TC1..TC5 with fixed `K` (for example 30).
+2. Record both variants' best/avg/worst from UI output.
+3. Add a table for sparse-like vs dense-like datasets.
+4. Explain observed trend against the table in Section 3.
+5. Include cross-check result to validate correctness consistency.
+
+## 7. Conclusion
+This project now satisfies the "evaluate complexity by graph structure" requirement at implementation level by:
+- providing two Dijkstra variants tied to two graph structures,
+- exposing side-by-side benchmark metrics,
+- and validating result consistency between variants.
+
+</code>
+
+Dijkstra-Project-One-Page-Plan.md:
+<code>
+# Dijkstra Delivery System - One-Page Project Plan
+
+## 1. Project Overview
+**Topic 10**: Optimizing a Delivery System with Dijkstra’s Algorithm  
+**Course**: Analysis and Design of Algorithms (Final Project)  
+
+Mục tiêu: Xây dựng ứng dụng WinUI 3 C++ (Unpackaged) mô phỏng hệ thống giao hàng, tìm đường đi ngắn nhất bằng thuật toán Dijkstra (Greedy strategy) trên đồ thị có trọng số dương, đồng thời đánh giá hiệu năng thực tế so với lý thuyết.
+
+## 2. Scope
+
+**In-scope**:
+- Mô hình hóa mạng lưới giao hàng dưới dạng hai cấu trúc: adjacency list và adjacency matrix.
+- Implement 2 biến thể Dijkstra:
+	- Adjacency list + `std::priority_queue` (min-heap).
+	- Adjacency matrix + linear scan.
+- Hiển thị đồ thị và highlight đường đi ngắn nhất trên Canvas.
+- Đo và phân tích thời gian chạy (Best / Average / Worst case) cho cả 2 biến thể.
+- Đối chiếu tính đúng đắn giữa 2 biến thể (cross-check distance/reachability).
+- Giao diện WinUI 3 responsive, hỗ trợ animation highlight.
+
+**Out-of-scope**:
+- Trọng số âm (không phù hợp với Dijkstra).
+- Tối ưu hóa đa xe / đa điểm đến đồng thời.
+- Yếu tố logistics thực tế (traffic, thời gian bốc dỡ…).
+
+**Technology Stack**:
+- C++20/23 + WinUI 3 Desktop (C++/WinRT) – Unpackaged
+- Visualization: Canvas / ItemsRepeater + Polyline
+
+## 3. Input / Output
+
+**Input**: Danh sách nodes + edges có trọng số dương (hỗ trợ nhập UI và file JSON).  
+**Output**: 
+- Chi phí ngắn nhất
+- Lộ trình chi tiết (A → C → D → F)
+- Thông báo khi không tồn tại đường đi
+
+## 4. Test Cases Chính
+
+- TC1: Đồ thị nhỏ – kiểm tra kết quả đúng
+- TC2: Nhiều đường đi – chọn đường tối ưu
+- TC3: Không tồn tại đường đi
+- TC4: Source = Target
+- TC5: Đồ thị lớn (50–100 nodes) – đo hiệu năng và so sánh Big-O
+
+## 5. Definition of Done (DoD)
+
+- Thuật toán trả kết quả đúng trên tất cả test cases.
+- Có đo runtime và bảng so sánh lý thuyết – thực nghiệm.
+- Có so sánh độ phức tạp theo cấu trúc đồ thị: list+heap vs matrix+scan.
+- Giao diện vẽ đồ thị + highlight đường đi mượt mà.
+- Code sạch, tách biệt logic thuật toán và UI.
+- Slide thuyết trình đầy đủ 7 mục bắt buộc của đề bài.
+- Repo GitHub có commit history rõ ràng.
+
+## 6. Timeline (7 ngày)
+
+- Day 1: Thiết kế Architecture + Test cases
+- Day 2–3: Implement core Dijkstra + unit test
+- Day 4–5: WinUI 3 UI + graph visualization + animation
+- Day 6: Benchmark + phân tích hiệu năng
+- Day 7: Slide + rehearsal + final submission
+
+## 7. Rủi ro & Mitigation
+
+- Rủi ro: UI lag khi đồ thị lớn → Giải pháp: giới hạn kích thước demo + batch update
+- Rủi ro: Sai predecessor khi trace path → Giải pháp: test case cố định + validation
+- Rủi ro: Demo lỗi → Giải pháp: chuẩn bị 2 dataset backup + video demo dự phòng
+</code>
+
+DijkstraSolver.cpp:
+<code>
+#include "pch.h"
+#include "DijkstraSolver.h"
+#include "MatrixGraph.h"
+
+#include <algorithm>
+#include <chrono>
+#include <functional>
+#include <limits>
+#include <queue>
+#include <stdexcept>
+
+namespace DijkstraDeliverySystem
+{
+    namespace
+    {
+        constexpr Graph::Weight kInfinity = (std::numeric_limits<Graph::Weight>::max)() / 4;
+
+        struct RunState
+        {
+            std::vector<Graph::Weight> Distances;
+            std::vector<int> Parents;
+        };
+
+        RunState RunDijkstraOnce(const Graph& graph, int source, int target)
+        {
+            const int vertexCount = graph.VertexCount();
+            std::vector<Graph::Weight> distances(static_cast<size_t>(vertexCount), kInfinity);
+            std::vector<int> parents(static_cast<size_t>(vertexCount), -1);
+
+            using QueueEntry = std::pair<Graph::Weight, int>;
+            std::priority_queue<QueueEntry, std::vector<QueueEntry>, std::greater<QueueEntry>> minHeap;
+
+            distances[static_cast<size_t>(source)] = 0;
+            minHeap.emplace(0, source);
+
+            while (!minHeap.empty())
+            {
+                const auto [currentDistance, currentNode] = minHeap.top();
+                minHeap.pop();
+
+                if (currentDistance != distances[static_cast<size_t>(currentNode)])
+                {
+                    continue;
+                }
+
+                if (currentNode == target)
+                {
+                    break;
+                }
+
+                for (const auto& [nextNode, weight] : graph.Neighbors(currentNode))
+                {
+                    const Graph::Weight candidateDistance = currentDistance + weight;
+                    if (candidateDistance < distances[static_cast<size_t>(nextNode)])
+                    {
+                        distances[static_cast<size_t>(nextNode)] = candidateDistance;
+                        parents[static_cast<size_t>(nextNode)] = currentNode;
+                        minHeap.emplace(candidateDistance, nextNode);
+                    }
+                }
+            }
+
+            return RunState{ std::move(distances), std::move(parents) };
+        }
+
+        RunState RunDijkstraMatrixOnce(const MatrixGraph& graph, int source, int target)
+        {
+            const int vertexCount = graph.VertexCount();
+            std::vector<Graph::Weight> distances(static_cast<size_t>(vertexCount), kInfinity);
+            std::vector<int> parents(static_cast<size_t>(vertexCount), -1);
+            std::vector<bool> visited(static_cast<size_t>(vertexCount), false);
+
+            distances[static_cast<size_t>(source)] = 0;
+
+            for (int iteration = 0; iteration < vertexCount; ++iteration)
+            {
+                int currentNode = -1;
+                Graph::Weight bestDistance = kInfinity;
+
+                for (int node = 0; node < vertexCount; ++node)
+                {
+                    if (!visited[static_cast<size_t>(node)] && distances[static_cast<size_t>(node)] < bestDistance)
+                    {
+                        bestDistance = distances[static_cast<size_t>(node)];
+                        currentNode = node;
+                    }
+                }
+
+                if (currentNode == -1 || currentNode == target)
+                {
+                    break;
+                }
+
+                visited[static_cast<size_t>(currentNode)] = true;
+
+                for (int nextNode = 0; nextNode < vertexCount; ++nextNode)
+                {
+                    const Graph::Weight edgeWeight = graph.WeightAt(currentNode, nextNode);
+                    if (edgeWeight <= 0)
+                    {
+                        continue;
+                    }
+
+                    const Graph::Weight candidateDistance = distances[static_cast<size_t>(currentNode)] + edgeWeight;
+                    if (candidateDistance < distances[static_cast<size_t>(nextNode)])
+                    {
+                        distances[static_cast<size_t>(nextNode)] = candidateDistance;
+                        parents[static_cast<size_t>(nextNode)] = currentNode;
+                    }
+                }
+            }
+
+            return RunState{ std::move(distances), std::move(parents) };
+        }
+
+        std::vector<int> ReconstructPath(const std::vector<int>& parents, int source, int target)
+        {
+            std::vector<int> reversedPath;
+            int current = target;
+
+            while (current != -1)
+            {
+                reversedPath.push_back(current);
+
+                if (current == source)
+                {
+                    break;
+                }
+
+                current = parents[static_cast<size_t>(current)];
+            }
+
+            if (reversedPath.empty() || reversedPath.back() != source)
+            {
+                return {};
+            }
+
+            std::reverse(reversedPath.begin(), reversedPath.end());
+            return reversedPath;
+        }
+    }
+
+    DijkstraResult DijkstraSolver::Solve(
+        const Graph& graph,
+        int source,
+        int target,
+        int benchmarkIterations,
+        ProgressCallback progressCallback) const
+    {
+        if (graph.VertexCount() <= 0)
+        {
+            throw std::invalid_argument("graph must contain at least one vertex");
+        }
+
+        if (source < 0 || source >= graph.VertexCount())
+        {
+            throw std::out_of_range("source vertex is out of range");
+        }
+
+        if (target < 0 || target >= graph.VertexCount())
+        {
+            throw std::out_of_range("target vertex is out of range");
+        }
+
+        if (source == target)
+        {
+            BenchmarkStats stats{};
+            stats.Iterations = (std::max)(1, benchmarkIterations);
+            stats.BestMicroseconds = 0;
+            stats.AverageMicroseconds = 0.0;
+            stats.WorstMicroseconds = 0;
+
+            std::vector<Graph::Weight> distances(static_cast<size_t>(graph.VertexCount()), kInfinity);
+            std::vector<int> parents(static_cast<size_t>(graph.VertexCount()), -1);
+            distances[static_cast<size_t>(source)] = 0;
+
+            return DijkstraResult{
+                true,
+                0,
+                std::vector<int>{ source },
+                std::move(distances),
+                std::move(parents),
+                stats,
+                stats,
+                true,
+                0,
+                true,
+                false
+            };
+        }
+
+        const int iterations = (std::max)(1, benchmarkIterations);
+        const MatrixGraph matrixGraph(graph);
+
+        BenchmarkStats stats{};
+        stats.Iterations = iterations;
+        stats.BestMicroseconds = (std::numeric_limits<long long>::max)();
+        stats.WorstMicroseconds = 0;
+
+        BenchmarkStats matrixStats{};
+        matrixStats.Iterations = iterations;
+        matrixStats.BestMicroseconds = (std::numeric_limits<long long>::max)();
+        matrixStats.WorstMicroseconds = 0;
+
+        RunState finalState{};
+        RunState finalMatrixState{};
+        long long totalMicroseconds = 0;
+        long long totalMatrixMicroseconds = 0;
+        int completedIterations = 0;
+        bool cancelled = false;
+
+        for (int i = 0; i < iterations; ++i)
+        {
+            const auto startedAt = std::chrono::high_resolution_clock::now();
+            RunState state = RunDijkstraOnce(graph, source, target);
+            const auto endedAt = std::chrono::high_resolution_clock::now();
+
+            const auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(endedAt - startedAt).count();
+            totalMicroseconds += elapsed;
+            stats.BestMicroseconds = (std::min)(stats.BestMicroseconds, elapsed);
+            stats.WorstMicroseconds = (std::max)(stats.WorstMicroseconds, elapsed);
+
+            if (i == 0)
+            {
+                finalState = std::move(state);
+            }
+
+            const auto matrixStartedAt = std::chrono::high_resolution_clock::now();
+            RunState matrixState = RunDijkstraMatrixOnce(matrixGraph, source, target);
+            const auto matrixEndedAt = std::chrono::high_resolution_clock::now();
+
+            const auto matrixElapsed = std::chrono::duration_cast<std::chrono::microseconds>(matrixEndedAt - matrixStartedAt).count();
+            totalMatrixMicroseconds += matrixElapsed;
+            matrixStats.BestMicroseconds = (std::min)(matrixStats.BestMicroseconds, matrixElapsed);
+            matrixStats.WorstMicroseconds = (std::max)(matrixStats.WorstMicroseconds, matrixElapsed);
+
+            if (i == 0)
+            {
+                finalMatrixState = std::move(matrixState);
+            }
+
+            completedIterations = i + 1;
+
+            if (progressCallback && !progressCallback(completedIterations, iterations))
+            {
+                cancelled = true;
+                break;
+            }
+        }
+
+        if (completedIterations == 0)
+        {
+            BenchmarkStats emptyStats{};
+            emptyStats.Iterations = 0;
+            emptyStats.BestMicroseconds = 0;
+            emptyStats.AverageMicroseconds = 0.0;
+            emptyStats.WorstMicroseconds = 0;
+
+            std::vector<Graph::Weight> distances(static_cast<size_t>(graph.VertexCount()), kInfinity);
+            std::vector<int> parents(static_cast<size_t>(graph.VertexCount()), -1);
+
+            return DijkstraResult{
+                false,
+                -1,
+                {},
+                std::move(distances),
+                std::move(parents),
+                emptyStats,
+                emptyStats,
+                false,
+                -1,
+                true,
+                cancelled
+            };
+        }
+
+        stats.Iterations = completedIterations;
+        matrixStats.Iterations = completedIterations;
+
+        stats.AverageMicroseconds = static_cast<double>(totalMicroseconds) / static_cast<double>(completedIterations);
+        matrixStats.AverageMicroseconds = static_cast<double>(totalMatrixMicroseconds) / static_cast<double>(completedIterations);
+
+        const Graph::Weight distance = finalState.Distances[static_cast<size_t>(target)];
+        const bool found = (distance != kInfinity);
+        std::vector<int> path = found ? ReconstructPath(finalState.Parents, source, target) : std::vector<int>{};
+
+        const Graph::Weight matrixDistance = finalMatrixState.Distances[static_cast<size_t>(target)];
+        const bool matrixFound = (matrixDistance != kInfinity);
+        const bool crossCheckPassed = (found == matrixFound) && (!found || distance == matrixDistance);
+
+        return DijkstraResult{
+            found,
+            found ? distance : -1,
+            std::move(path),
+            std::move(finalState.Distances),
+            std::move(finalState.Parents),
+            stats,
+            matrixStats,
+            matrixFound,
+            matrixFound ? matrixDistance : -1,
+            crossCheckPassed,
+            cancelled
+        };
+    }
+}
+
+</code>
+
+DijkstraSolver.h:
+<code>
+#pragma once
+
+#include "Graph.h"
+
+#include <functional>
+#include <vector>
+
+namespace DijkstraDeliverySystem
+{
+    struct BenchmarkStats
+    {
+        long long BestMicroseconds{};
+        double AverageMicroseconds{};
+        long long WorstMicroseconds{};
+        int Iterations{};
+    };
+
+    struct DijkstraResult
+    {
+        bool Found{};
+        Graph::Weight Distance{};
+        std::vector<int> Path;
+        std::vector<Graph::Weight> Distances;
+        std::vector<int> Parents;
+        BenchmarkStats Benchmark;
+        BenchmarkStats MatrixBenchmark;
+        bool MatrixFound{};
+        Graph::Weight MatrixDistance{};
+        bool CrossCheckPassed{};
+        bool Cancelled{};
+    };
+
+    class DijkstraSolver
+    {
+    public:
+        using ProgressCallback = std::function<bool(int completedIterations, int totalIterations)>;
+
+        DijkstraResult Solve(
+            const Graph& graph,
+            int source,
+            int target,
+            int benchmarkIterations = 30,
+            ProgressCallback progressCallback = nullptr) const;
+    };
+}
+
+</code>
+
+Graph.cpp:
+<code>
+#include "pch.h"
+#include "Graph.h"
+
+namespace DijkstraDeliverySystem
+{
+    Graph::Graph(int vertexCount, bool directed)
+        : m_vertexCount(vertexCount), m_directed(directed), m_adjacency(static_cast<size_t>(vertexCount))
+    {
+        if (vertexCount < 0)
+        {
+            throw std::invalid_argument("vertexCount must be non-negative");
+        }
+    }
+
+    void Graph::AddEdge(int from, int to, Weight weight)
+    {
+        ValidateVertex(from);
+        ValidateVertex(to);
+
+        if (weight <= 0)
+        {
+            throw std::invalid_argument("Dijkstra requires positive edge weights");
+        }
+
+        m_adjacency[static_cast<size_t>(from)].emplace_back(to, weight);
+
+        if (!m_directed)
+        {
+            m_adjacency[static_cast<size_t>(to)].emplace_back(from, weight);
+        }
+    }
+
+    int Graph::VertexCount() const noexcept
+    {
+        return m_vertexCount;
+    }
+
+    bool Graph::IsDirected() const noexcept
+    {
+        return m_directed;
+    }
+
+    const std::vector<Graph::Neighbor>& Graph::Neighbors(int vertex) const
+    {
+        ValidateVertex(vertex);
+        return m_adjacency[static_cast<size_t>(vertex)];
+    }
+
+    void Graph::ValidateVertex(int vertex) const
+    {
+        if (vertex < 0 || vertex >= m_vertexCount)
+        {
+            throw std::out_of_range("vertex index is out of range");
+        }
+    }
+}
+
+</code>
+
+Graph.h:
+<code>
+#pragma once
+
+#include <stdexcept>
+#include <utility>
+#include <vector>
+
+namespace DijkstraDeliverySystem
+{
+    class Graph
+    {
+    public:
+        using Weight = long long;
+        using Neighbor = std::pair<int, Weight>;
+
+        Graph(int vertexCount = 0, bool directed = false);
+
+        void AddEdge(int from, int to, Weight weight);
+
+        int VertexCount() const noexcept;
+        bool IsDirected() const noexcept;
+        const std::vector<Neighbor>& Neighbors(int vertex) const;
+
+    private:
+        void ValidateVertex(int vertex) const;
+
+        int m_vertexCount;
+        bool m_directed;
+        std::vector<std::vector<Neighbor>> m_adjacency;
+    };
+}
+
+</code>
+
+main.cpp:
+<code>
+#include "pch.h"
+#include "App.xaml.h"
+
+#include <appmodel.h>
+#include <MddBootstrap.h>
+#include <wil/resource.h>
+
+using namespace winrt;
+
+namespace
+{
+    constexpr uint32_t WindowsAppSdkMajorMinorVersion = 0x00010008;
+
+    bool IsPackagedProcess()
+    {
+        uint32_t packageFullNameLength = 0;
+        const LONG result = ::GetCurrentPackageFullName(&packageFullNameLength, nullptr);
+        return result != APPMODEL_ERROR_NO_PACKAGE;
+    }
+}
+
+int __stdcall wWinMain(HINSTANCE, HINSTANCE, PWSTR, int)
+{
+    winrt::init_apartment(winrt::apartment_type::single_threaded);
+
+    bool bootstrapInitialized = false;
+    auto bootstrapShutdown = wil::scope_exit([&bootstrapInitialized]()
+    {
+        if (bootstrapInitialized)
+        {
+            ::MddBootstrapShutdown();
+        }
+    });
+
+    if (!IsPackagedProcess())
+    {
+        PACKAGE_VERSION minVersion{};
+        const HRESULT initializeResult = ::MddBootstrapInitialize2(
+            WindowsAppSdkMajorMinorVersion,
+            nullptr,
+            minVersion,
+            MddBootstrapInitializeOptions_None);
+
+        if (FAILED(initializeResult))
+        {
+            return static_cast<int>(initializeResult);
+        }
+
+        bootstrapInitialized = true;
+    }
+
+    winrt::Microsoft::UI::Xaml::Application::Start(
+        [](auto&&)
+        {
+            make<winrt::DijkstraDeliverySystem::implementation::App>();
+        });
+
+    return 0;
+}
+
+</code>
+
+MainWindow.xaml.cpp:
+<code>
+#include "pch.h"
+#include "MainWindow.xaml.h"
+#if __has_include("MainWindow.g.cpp")
+#include "MainWindow.g.cpp"
+#endif
+
+#include <algorithm>
+#include <chrono>
+#include <cmath>
+#include <cwctype>
+#include <functional>
+#include <iomanip>
+#include <memory>
+#include <psapi.h>
+#include <sstream>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+
+#pragma comment(lib, "Psapi.lib")
+
+using namespace winrt;
+using namespace Windows::Foundation::Numerics;
+using namespace Microsoft::UI::Xaml;
+using namespace Microsoft::UI::Xaml::Controls;
+using namespace Microsoft::UI::Xaml::Media;
+using namespace Microsoft::UI::Xaml::Shapes;
+using namespace Windows::Foundation;
+
+namespace
+{
+    struct ProgressUiState
+    {
+        std::atomic<int> latestCompleted{ 0 };
+        std::atomic<int> latestTotal{ 0 };
+        std::atomic<int> renderedCompleted{ 0 };
+        std::atomic<bool> workScheduled{ false };
+        std::atomic<bool> finished{ false };
+    };
+
+#ifdef _DEBUG
+    bool ShouldLogMemoryRun(int runIndex)
+    {
+        return runIndex == 1 || runIndex == 5 || runIndex == 10 || runIndex == 20;
+    }
+
+    size_t GetCurrentPrivateBytes()
+    {
+        PROCESS_MEMORY_COUNTERS_EX counters{};
+        counters.cb = sizeof(counters);
+
+        if (!::GetProcessMemoryInfo(
+            ::GetCurrentProcess(),
+            reinterpret_cast<PROCESS_MEMORY_COUNTERS*>(&counters),
+            sizeof(counters)))
+        {
+            return 0;
+        }
+
+        return static_cast<size_t>(counters.PrivateUsage);
+    }
+
+    void LogPrivateBytesSnapshot(
+        int runIndex,
+        wchar_t const* phase,
+        size_t privateBytes,
+        size_t baselineBytes,
+        size_t runStartBytes)
+    {
+        constexpr double bytesPerMegabyte = 1024.0 * 1024.0;
+
+        const double privateMb = static_cast<double>(privateBytes) / bytesPerMegabyte;
+        const double baselineMb = static_cast<double>(baselineBytes) / bytesPerMegabyte;
+        const double runStartMb = static_cast<double>(runStartBytes) / bytesPerMegabyte;
+        const double runDeltaMb = privateMb - runStartMb;
+
+        double growthPercent = 0.0;
+        if (baselineBytes > 0)
+        {
+            growthPercent =
+                (static_cast<double>(privateBytes) - static_cast<double>(baselineBytes)) * 100.0 /
+                static_cast<double>(baselineBytes);
+        }
+
+        std::wstringstream stream;
+        stream << std::fixed << std::setprecision(2)
+               << L"[MEM] run=" << runIndex
+               << L" phase=" << phase
+               << L" private_mb=" << privateMb
+               << L" run_delta_mb=" << runDeltaMb
+               << L" baseline_mb=" << baselineMb
+               << L" growth_pct=" << growthPercent
+               << L"\n";
+
+        ::OutputDebugStringW(stream.str().c_str());
+    }
+#endif
+
+    std::wstring ConvertMultibyteToWide(std::string const& value, UINT codePage, DWORD flags)
+    {
+        if (value.empty())
+        {
+            return {};
+        }
+
+        const int sourceLength = static_cast<int>(value.size());
+        const int requiredLength = ::MultiByteToWideChar(codePage, flags, value.data(), sourceLength, nullptr, 0);
+        if (requiredLength <= 0)
+        {
+            return {};
+        }
+
+        std::wstring wideValue(static_cast<size_t>(requiredLength), L'\0');
+        const int convertedLength = ::MultiByteToWideChar(
+            codePage,
+            flags,
+            value.data(),
+            sourceLength,
+            wideValue.data(),
+            requiredLength);
+
+        if (convertedLength <= 0)
+        {
+            return {};
+        }
+
+        return wideValue;
+    }
+
+    hstring DecodeErrorText(std::string const& value)
+    {
+        if (value.empty())
+        {
+            return {};
+        }
+
+        const auto utf8Value = ConvertMultibyteToWide(value, CP_UTF8, MB_ERR_INVALID_CHARS);
+        if (!utf8Value.empty())
+        {
+            return hstring(utf8Value);
+        }
+
+        const auto ansiValue = ConvertMultibyteToWide(value, CP_ACP, 0);
+        if (!ansiValue.empty())
+        {
+            return hstring(ansiValue);
+        }
+
+        return L"Dữ liệu lỗi không hợp lệ.";
+    }
+
+    hstring ToVietnameseSolveError(std::string const& value)
+    {
+        if (value.find("source vertex is out of range") != std::string::npos ||
+            value.find("target vertex is out of range") != std::string::npos ||
+            value.find("vertex index is out of range") != std::string::npos)
+        {
+            return L"ID node nguồn hoặc đích nằm ngoài phạm vi của đồ thị.";
+        }
+
+        if (value.find("graph must contain at least one vertex") != std::string::npos)
+        {
+            return L"Đồ thị phải có ít nhất một node.";
+        }
+
+        const auto decodedValue = DecodeErrorText(value);
+        if (decodedValue.empty())
+        {
+            return L"Dữ liệu đầu vào không hợp lệ.";
+        }
+
+        return decodedValue;
+    }
+
+    hstring BuildSolveErrorMessage(hstring const& detail)
+    {
+        std::wstring message = L"Lỗi xử lý dữ liệu: ";
+        message += detail.c_str();
+        return hstring(message);
+    }
+}
+
+namespace winrt::DijkstraDeliverySystem::implementation
+{
+    MainWindow::MainWindow()
+    {
+        m_isUiReady = false;
+        InitializeComponent();
+
+        if (const auto resources = Application::Current().Resources())
+        {
+            m_captionTextStyle = resources.Lookup(box_value(L"CaptionTextBlockStyle")).try_as<Style>();
+            m_bodyStrongTextStyle = resources.Lookup(box_value(L"BodyStrongTextBlockStyle")).try_as<Style>();
+        }
+
+        PathCanvas().SizeChanged({ this, &MainWindow::PathCanvas_SizeChanged });
+        m_lastResizeSignal = std::chrono::steady_clock::now();
+
+        SetInteractionEnabled(true);
+        ResetProgressUI();
+        BuildSampleGraph();
+        RenderGraph({});
+        StatusTextBlock().Text(L"Enter source and target nodes, then run Dijkstra.");
+        m_isUiReady = true;
+    }
+
+    void MainWindow::BuildSampleGraph()
+    {
+        const int testCase = SelectedTestCase();
+        LoadGraphByTestCase(testCase);
+        SetInputsForTestCase(testCase);
+    }
+
+    void MainWindow::LoadGraphByTestCase(int testCase)
+    {
+        m_expectedDistance = -1;
+
+        if (testCase == 2)
+        {
+            m_graph = ::DijkstraDeliverySystem::Graph(5, false);
+            m_graph.AddEdge(0, 1, 2);
+            m_graph.AddEdge(0, 2, 2);
+            m_graph.AddEdge(1, 3, 2);
+            m_graph.AddEdge(2, 3, 2);
+            m_graph.AddEdge(3, 4, 2);
+            m_graph.AddEdge(1, 2, 1);
+            m_expectedDistance = 6;
+        }
+        else if (testCase == 3)
+        {
+            m_graph = ::DijkstraDeliverySystem::Graph(6, false);
+            m_graph.AddEdge(0, 1, 1);
+            m_graph.AddEdge(1, 2, 2);
+            m_graph.AddEdge(3, 4, 1);
+            m_graph.AddEdge(4, 5, 2);
+        }
+        else if (testCase == 4)
+        {
+            m_graph = ::DijkstraDeliverySystem::Graph(8, false);
+            m_graph.AddEdge(0, 1, 4);
+            m_graph.AddEdge(0, 2, 3);
+            m_graph.AddEdge(1, 2, 1);
+            m_graph.AddEdge(1, 3, 2);
+            m_graph.AddEdge(2, 4, 6);
+            m_graph.AddEdge(3, 4, 1);
+            m_graph.AddEdge(3, 5, 5);
+            m_graph.AddEdge(4, 6, 2);
+            m_graph.AddEdge(5, 6, 1);
+            m_graph.AddEdge(5, 7, 7);
+            m_graph.AddEdge(6, 7, 3);
+            m_expectedDistance = 0;
+        }
+        else if (testCase == 5)
+        {
+            constexpr int vertexCount = 50;
+            m_graph = ::DijkstraDeliverySystem::Graph(vertexCount, false);
+
+            for (int i = 0; i < vertexCount - 1; ++i)
+            {
+                m_graph.AddEdge(i, i + 1, 1 + (i % 4));
+            }
+
+            m_graph.AddEdge(0, 5, 3);
+            m_graph.AddEdge(3, 9, 4);
+            m_graph.AddEdge(6, 12, 2);
+            m_graph.AddEdge(10, 15, 3);
+            m_graph.AddEdge(14, 19, 4);
+            m_graph.AddEdge(2, 11, 6);
+            m_graph.AddEdge(8, 18, 5);
+
+            for (int i = 20; i < vertexCount; i += 5)
+            {
+                if (i + 4 < vertexCount)
+                {
+                    m_graph.AddEdge(i, i + 2, 2 + (i % 3));
+                    m_graph.AddEdge(i + 1, i + 4, 3 + ((i + 1) % 4));
+                }
+
+                if (i - 7 >= 0)
+                {
+                    m_graph.AddEdge(i, i - 7, 5);
+                }
+            }
+
+            m_graph.AddEdge(0, 25, 8);
+            m_graph.AddEdge(10, 32, 7);
+            m_graph.AddEdge(21, 40, 6);
+            m_graph.AddEdge(33, 49, 5);
+        }
+        else
+        {
+            m_graph = ::DijkstraDeliverySystem::Graph(8, false);
+            m_graph.AddEdge(0, 1, 4);
+            m_graph.AddEdge(0, 2, 3);
+            m_graph.AddEdge(1, 2, 1);
+            m_graph.AddEdge(1, 3, 2);
+            m_graph.AddEdge(2, 4, 6);
+            m_graph.AddEdge(3, 4, 1);
+            m_graph.AddEdge(3, 5, 5);
+            m_graph.AddEdge(4, 6, 2);
+            m_graph.AddEdge(5, 6, 1);
+            m_graph.AddEdge(5, 7, 7);
+            m_graph.AddEdge(6, 7, 3);
+            m_expectedDistance = 12;
+        }
+
+        GenerateNodePositions(m_graph.VertexCount());
+    }
+
+    void MainWindow::SetInputsForTestCase(int testCase)
+    {
+        auto sourceNodeBox = SourceNodeBox();
+        auto targetNodeBox = TargetNodeBox();
+
+        if (sourceNodeBox == nullptr || targetNodeBox == nullptr)
+        {
+            return;
+        }
+
+        if (testCase == 3)
+        {
+            sourceNodeBox.Text(L"0");
+            targetNodeBox.Text(L"5");
+        }
+        else if (testCase == 2)
+        {
+            sourceNodeBox.Text(L"0");
+            targetNodeBox.Text(L"4");
+        }
+        else if (testCase == 4)
+        {
+            sourceNodeBox.Text(L"2");
+            targetNodeBox.Text(L"2");
+        }
+        else if (testCase == 5)
+        {
+            sourceNodeBox.Text(L"0");
+            targetNodeBox.Text(L"49");
+        }
+        else
+        {
+            sourceNodeBox.Text(L"0");
+            targetNodeBox.Text(L"7");
+        }
+    }
+
+    int MainWindow::SelectedTestCase()
+    {
+        auto testCaseBox = TestCaseBox();
+        if (testCaseBox == nullptr)
+        {
+            return 1;
+        }
+
+        const int index = static_cast<int>(testCaseBox.SelectedIndex());
+        return (index >= 0) ? (index + 1) : 1;
+    }
+
+    void MainWindow::GenerateNodePositions(int vertexCount)
+    {
+        m_nodePositions.clear();
+        m_nodePositions.reserve(static_cast<size_t>(vertexCount));
+
+        constexpr double pi = 3.14159265358979323846;
+
+        if (vertexCount <= 0)
+        {
+            return;
+        }
+
+        double canvasWidth = PathCanvas().ActualWidth();
+        double canvasHeight = PathCanvas().ActualHeight();
+        if (canvasWidth < 120.0 || canvasHeight < 120.0)
+        {
+            // Actual size may be unavailable during initial load.
+            canvasWidth = 720.0;
+            canvasHeight = 420.0;
+        }
+
+        constexpr double outerPadding = 32.0;
+        const float centerX = static_cast<float>(canvasWidth / 2.0);
+        const float centerY = static_cast<float>(canvasHeight / 2.0);
+        const float radius = static_cast<float>((std::max)(
+            40.0,
+            (std::min)(canvasWidth, canvasHeight) / 2.0 - outerPadding));
+
+        for (int i = 0; i < vertexCount; ++i)
+        {
+            const double angle = (2.0 * pi * static_cast<double>(i)) / static_cast<double>(vertexCount);
+            const float x = centerX + static_cast<float>(std::cos(angle) * radius);
+            const float y = centerY + static_cast<float>(std::sin(angle) * radius);
+            m_nodePositions.emplace_back(x, y);
+        }
+    }
+
+    void MainWindow::TestCaseBox_SelectionChanged(IInspectable const&, SelectionChangedEventArgs const&)
+    {
+        if (!m_isUiReady)
+        {
+            return;
+        }
+
+        if (m_isSolving)
+        {
+            StatusTextBlock().Text(L"Đang chạy Dijkstra, vui lòng chờ...");
+            return;
+        }
+
+        auto sourceNodeBox = SourceNodeBox();
+        auto targetNodeBox = TargetNodeBox();
+        auto statusTextBlock = StatusTextBlock();
+        if (sourceNodeBox == nullptr || targetNodeBox == nullptr || statusTextBlock == nullptr)
+        {
+            return;
+        }
+
+        const int testCase = SelectedTestCase();
+        LoadGraphByTestCase(testCase);
+        SetInputsForTestCase(testCase);
+        RenderGraph({});
+        statusTextBlock.Text(L"Test case loaded. Press Run Dijkstra to evaluate.");
+    }
+
+    void MainWindow::PathCanvas_SizeChanged(IInspectable const&, SizeChangedEventArgs const& args)
+    {
+        if (!m_isUiReady)
+        {
+            return;
+        }
+
+        const auto newSize = args.NewSize();
+        if (std::abs(static_cast<double>(newSize.Width) - m_lastCanvasWidth) < 0.5 &&
+            std::abs(static_cast<double>(newSize.Height) - m_lastCanvasHeight) < 0.5)
+        {
+            return;
+        }
+
+        m_lastCanvasWidth = static_cast<double>(newSize.Width);
+        m_lastCanvasHeight = static_cast<double>(newSize.Height);
+
+        m_resizePending = true;
+        m_resizeNeedsFinalRender = true;
+        m_resizeActive = true;
+        m_lastResizeSignal = std::chrono::steady_clock::now();
+
+        EnsureResizeTimer();
+        if (!m_resizeTimer.IsRunning())
+        {
+            m_resizeTimer.Start();
+        }
+    }
+
+    void MainWindow::EnsureResizeTimer()
+    {
+        if (m_resizeTimer != nullptr)
+        {
+            return;
+        }
+
+        m_resizeTimer = DispatcherQueue().CreateTimer();
+        m_resizeTimer.IsRepeating(true);
+        m_resizeTimer.Interval(std::chrono::milliseconds(120));
+        m_resizeTimer.Tick({ this, &MainWindow::ResizeTimer_Tick });
+    }
+
+    void MainWindow::ResizeTimer_Tick(Microsoft::UI::Dispatching::DispatcherQueueTimer const& sender, IInspectable const&)
+    {
+        if (!m_resizeActive)
+        {
+            sender.Stop();
+            return;
+        }
+
+        const auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(
+            std::chrono::steady_clock::now() - m_lastResizeSignal);
+        const bool stillResizing = elapsed < std::chrono::milliseconds(220);
+
+        if (m_resizePending)
+        {
+            m_resizePending = false;
+            GenerateNodePositions(m_graph.VertexCount());
+            RenderGraph(m_lastHighlightedPath, m_lastHighlightedSource, m_lastHighlightedTarget, false);
+        }
+
+        if (!stillResizing)
+        {
+            if (m_resizeNeedsFinalRender)
+            {
+                m_resizeNeedsFinalRender = false;
+                GenerateNodePositions(m_graph.VertexCount());
+                RenderGraph(m_lastHighlightedPath, m_lastHighlightedSource, m_lastHighlightedTarget, true);
+            }
+
+            m_resizePending = false;
+            m_resizeActive = false;
+            sender.Stop();
+        }
+    }
+
+    void MainWindow::StartHighlightAnimation(UIElement const& element, int delayMs, bool forNode)
+    {
+        using namespace Microsoft::UI::Xaml::Media::Animation;
+        using namespace std::chrono;
+
+        element.Opacity(0.30);
+
+        const auto begin = duration_cast<Windows::Foundation::TimeSpan>(milliseconds(delayMs));
+        const auto duration = duration_cast<Windows::Foundation::TimeSpan>(forNode ? milliseconds(520) : milliseconds(380));
+
+        DoubleAnimation animation{};
+        animation.From(0.30);
+        animation.To(1.0);
+        animation.BeginTime(begin);
+        animation.Duration(DurationHelper::FromTimeSpan(duration));
+
+        Storyboard storyboard{};
+        Storyboard::SetTarget(animation, element);
+        Storyboard::SetTargetProperty(animation, L"Opacity");
+        storyboard.Children().Append(animation);
+
+        m_runningAnimations.push_back(storyboard);
+        m_runningAnimations.back().Begin();
+    }
+
+    void MainWindow::StartNodePulseAndShadow(UIElement const& element, int delayMs, Windows::UI::Color const& glowColor, NodeAnimationRole role)
+    {
+        using namespace Microsoft::UI::Xaml::Hosting;
+        using namespace std::chrono;
+
+        const auto baseVisual = ElementCompositionPreview::GetElementVisual(element);
+        const auto compositor = baseVisual.Compositor();
+
+        baseVisual.CenterPoint(float3{ 18.0f, 18.0f, 0.0f });
+
+        const auto delay = duration_cast<Windows::Foundation::TimeSpan>(milliseconds(delayMs));
+
+        float peakScale = 1.06f;
+        int32_t pulseIterations = 1;
+        float shadowOpacityValue = 0.28f;
+        float shadowBlur = 14.0f;
+
+        auto pulseDuration = duration_cast<Windows::Foundation::TimeSpan>(milliseconds(560));
+        auto shadowDuration = duration_cast<Windows::Foundation::TimeSpan>(milliseconds(1000));
+
+        if (role == NodeAnimationRole::Source)
+        {
+            peakScale = 1.10f;
+            pulseIterations = 2;
+            shadowOpacityValue = 0.38f;
+            shadowBlur = 18.0f;
+            pulseDuration = duration_cast<Windows::Foundation::TimeSpan>(milliseconds(900));
+            shadowDuration = duration_cast<Windows::Foundation::TimeSpan>(milliseconds(1800));
+        }
+        else if (role == NodeAnimationRole::Target)
+        {
+            peakScale = 1.16f;
+            pulseIterations = 2;
+            shadowOpacityValue = 0.58f;
+            shadowBlur = 24.0f;
+            pulseDuration = duration_cast<Windows::Foundation::TimeSpan>(milliseconds(620));
+            shadowDuration = duration_cast<Windows::Foundation::TimeSpan>(milliseconds(1500));
+        }
+
+        auto pulse = compositor.CreateVector3KeyFrameAnimation();
+        pulse.InsertKeyFrame(0.0f, float3{ 1.0f, 1.0f, 1.0f });
+        pulse.InsertKeyFrame(0.5f, float3{ peakScale, peakScale, 1.0f });
+        pulse.InsertKeyFrame(1.0f, float3{ 1.0f, 1.0f, 1.0f });
+        pulse.DelayTime(delay);
+        pulse.Duration(pulseDuration);
+        pulse.IterationCount(pulseIterations);
+        baseVisual.StartAnimation(L"Scale", pulse);
+
+        auto shadow = compositor.CreateDropShadow();
+        shadow.Color(glowColor);
+        shadow.BlurRadius(shadowBlur);
+        shadow.Opacity(shadowOpacityValue);
+
+        auto shadowVisual = compositor.CreateSpriteVisual();
+        shadowVisual.Size(float2{ 36.0f, 36.0f });
+        shadowVisual.Shadow(shadow);
+        shadowVisual.Opacity(0.0f);
+
+        auto shadowOpacityAnimation = compositor.CreateScalarKeyFrameAnimation();
+        shadowOpacityAnimation.InsertKeyFrame(0.0f, 0.0f);
+        shadowOpacityAnimation.InsertKeyFrame(0.30f, 1.0f);
+        shadowOpacityAnimation.InsertKeyFrame(1.0f, 0.0f);
+        shadowOpacityAnimation.DelayTime(delay);
+        shadowOpacityAnimation.Duration(shadowDuration);
+
+        shadowVisual.StartAnimation(L"Opacity", shadowOpacityAnimation);
+
+        if (const auto existingChildVisual = ElementCompositionPreview::GetElementChildVisual(element))
+        {
+            existingChildVisual.StopAnimation(L"Opacity");
+            if (const auto existingSpriteVisual = existingChildVisual.try_as<Microsoft::UI::Composition::SpriteVisual>())
+            {
+                existingSpriteVisual.Shadow(nullptr);
+            }
+        }
+
+        ElementCompositionPreview::SetElementChildVisual(element, nullptr);
+        ElementCompositionPreview::SetElementChildVisual(element, shadowVisual);
+    }
+
+    fire_and_forget MainWindow::SolveButton_Click(IInspectable const&, RoutedEventArgs const&)
+    {
+        auto lifetime = get_strong();
+
+        if (m_isSolving)
+        {
+            StatusTextBlock().Text(m_cancelRequested.load() ? L"Đang hủy benchmark..." : L"Đang chạy Dijkstra, vui lòng chờ...");
+            co_return;
+        }
+
+        const int testCase = SelectedTestCase();
+        int source = 0;
+        int target = 0;
+        if (!TryParseInt(SourceNodeBox().Text(), source) || !TryParseInt(TargetNodeBox().Text(), target))
+        {
+            RenderGraph({});
+            StatusTextBlock().Text(L"Vui lòng nhập ID node là số nguyên");
+            co_return;
+        }
+
+        int iterations = 0;
+        if (!TryParseIterations(iterations))
+        {
+            RenderGraph({});
+            StatusTextBlock().Text(L"Iterations phải là số nguyên trong khoảng 1 đến 1000");
+            co_return;
+        }
+
+        if (source < 0 || source >= m_graph.VertexCount() || target < 0 || target >= m_graph.VertexCount())
+        {
+            RenderGraph({});
+            StatusTextBlock().Text(L"ID node nguồn hoặc đích nằm ngoài phạm vi của đồ thị hiện tại.");
+            co_return;
+        }
+
+        // Prevent re-entry while a run is active to avoid overlapping heavy computations.
+        m_isSolving = true;
+        m_cancelRequested.store(false);
+        SetInteractionEnabled(false);
+        UpdateProgressUI(0, iterations);
+
+        int runIndex = 0;
+        size_t runStartPrivateBytes = 0;
+        size_t baselinePrivateBytes = 0;
+#ifdef _DEBUG
+        static std::atomic<int> debugRunCounter{ 0 };
+        static std::atomic<size_t> debugBaselinePrivateBytes{ 0 };
+
+        runIndex = debugRunCounter.fetch_add(1, std::memory_order_relaxed) + 1;
+        runStartPrivateBytes = GetCurrentPrivateBytes();
+
+        baselinePrivateBytes = debugBaselinePrivateBytes.load(std::memory_order_relaxed);
+        if (baselinePrivateBytes == 0)
+        {
+            size_t expected = 0;
+            if (debugBaselinePrivateBytes.compare_exchange_strong(expected, runStartPrivateBytes, std::memory_order_relaxed))
+            {
+                baselinePrivateBytes = runStartPrivateBytes;
+            }
+            else
+            {
+                baselinePrivateBytes = expected;
+            }
+        }
+
+        if (ShouldLogMemoryRun(runIndex))
+        {
+            LogPrivateBytesSnapshot(runIndex, L"START", runStartPrivateBytes, baselinePrivateBytes, runStartPrivateBytes);
+        }
+#endif
+
+        const auto graphSnapshot = m_graph;
+        const int sourceSnapshot = source;
+        const int targetSnapshot = target;
+        const int testCaseSnapshot = testCase;
+        const auto weakThis = get_weak();
+        const auto uiQueue = DispatcherQueue();
+        auto progressUiState = std::make_shared<ProgressUiState>();
+        progressUiState->latestTotal.store(iterations, std::memory_order_relaxed);
+
+        auto scheduleProgressUpdate = std::make_shared<std::function<void()>>();
+        *scheduleProgressUpdate = [weakThis, uiQueue, progressUiState, scheduleProgressUpdate]()
+        {
+            if (progressUiState->finished.load(std::memory_order_acquire))
+            {
+                return;
+            }
+
+            if (progressUiState->workScheduled.exchange(true, std::memory_order_acq_rel))
+            {
+                return;
+            }
+
+            uiQueue.TryEnqueue(Microsoft::UI::Dispatching::DispatcherQueuePriority::Low,
+                [weakThis, uiQueue, progressUiState, scheduleProgressUpdate]()
+            {
+                if (!progressUiState->finished.load(std::memory_order_acquire))
+                {
+                    if (auto self = weakThis.get())
+                    {
+                        const int latestCompleted = progressUiState->latestCompleted.load(std::memory_order_relaxed);
+                        const int latestTotal = progressUiState->latestTotal.load(std::memory_order_relaxed);
+                        const int renderedCompleted = progressUiState->renderedCompleted.load(std::memory_order_relaxed);
+
+                        if (latestCompleted != renderedCompleted || latestCompleted == latestTotal)
+                        {
+                            self->UpdateProgressUI(latestCompleted, latestTotal);
+                            progressUiState->renderedCompleted.store(latestCompleted, std::memory_order_relaxed);
+                        }
+                    }
+                }
+
+                progressUiState->workScheduled.store(false, std::memory_order_release);
+
+                if (progressUiState->finished.load(std::memory_order_acquire))
+                {
+                    return;
+                }
+
+                const int latestCompleted = progressUiState->latestCompleted.load(std::memory_order_relaxed);
+                const int renderedCompleted = progressUiState->renderedCompleted.load(std::memory_order_relaxed);
+                if (latestCompleted != renderedCompleted)
+                {
+                    (*scheduleProgressUpdate)();
+                }
+            });
+        };
+
+        ::DijkstraDeliverySystem::DijkstraResult result{};
+        hstring solveError;
+        bool cancelled = false;
+
+        co_await resume_background();
+        try
+        {
+            result = m_solver.Solve(
+                graphSnapshot,
+                sourceSnapshot,
+                targetSnapshot,
+                iterations,
+                [this, progressUiState, scheduleProgressUpdate](int completedIterations, int totalIterations)
+                {
+                    if (m_cancelRequested.load())
+                    {
+                        return false;
+                    }
+
+                    progressUiState->latestCompleted.store(completedIterations, std::memory_order_relaxed);
+                    progressUiState->latestTotal.store(totalIterations, std::memory_order_relaxed);
+                    (*scheduleProgressUpdate)();
+
+                    return true;
+                });
+
+            cancelled = result.Cancelled || m_cancelRequested.load();
+        }
+        catch (std::exception const& ex)
+        {
+            solveError = ToVietnameseSolveError(ex.what());
+        }
+        catch (...)
+        {
+            solveError = L"Lỗi không xác định trong quá trình tính toán.";
+        }
+
+        progressUiState->finished.store(true, std::memory_order_release);
+
+        uiQueue.TryEnqueue([weakThis,
+                            result = std::move(result),
+                            solveError = std::move(solveError),
+                            cancelled,
+                            sourceSnapshot,
+                            targetSnapshot,
+                            testCaseSnapshot,
+                            runIndex,
+                            runStartPrivateBytes,
+                            baselinePrivateBytes]() mutable
+        {
+            if (auto self = weakThis.get())
+            {
+                if (solveError.empty())
+                {
+                    if (cancelled)
+                    {
+                        self->RenderGraph({});
+                        self->StatusTextBlock().Text(L"Đã hủy benchmark theo yêu cầu.");
+                    }
+                    else
+                    {
+                        self->RenderGraph(result.Path, sourceSnapshot, targetSnapshot);
+                        self->StatusTextBlock().Text(self->BuildResultText(result, sourceSnapshot, targetSnapshot, testCaseSnapshot));
+                    }
+                }
+                else
+                {
+                    self->RenderGraph({});
+                    self->StatusTextBlock().Text(BuildSolveErrorMessage(solveError));
+                }
+
+#ifdef _DEBUG
+                if (ShouldLogMemoryRun(runIndex))
+                {
+                    const size_t runEndPrivateBytes = GetCurrentPrivateBytes();
+                    LogPrivateBytesSnapshot(runIndex, L"END", runEndPrivateBytes, baselinePrivateBytes, runStartPrivateBytes);
+                }
+#endif
+
+                self->ResetProgressUI();
+                self->SetInteractionEnabled(true);
+                self->m_isSolving = false;
+                self->m_cancelRequested.store(false);
+            }
+        });
+
+        co_return;
+    }
+
+    void MainWindow::CancelButton_Click(IInspectable const&, RoutedEventArgs const&)
+    {
+        if (!m_isSolving || m_cancelRequested.load())
+        {
+            return;
+        }
+
+        m_cancelRequested.store(true);
+        CancelButton().IsEnabled(false);
+        StatusTextBlock().Text(L"Đang hủy benchmark...");
+    }
+
+    void MainWindow::RenderGraph(std::vector<int> const& highlightedPath, int source, int target, bool enableEffects)
+    {
+        m_lastHighlightedPath = highlightedPath;
+        m_lastHighlightedSource = source;
+        m_lastHighlightedTarget = target;
+
+        auto children = PathCanvas().Children();
+        for (uint32_t i = 0; i < children.Size(); ++i)
+        {
+            if (auto element = children.GetAt(i).try_as<UIElement>())
+            {
+                const auto childVisual = Microsoft::UI::Xaml::Hosting::ElementCompositionPreview::GetElementChildVisual(element);
+                if (childVisual != nullptr)
+                {
+                    childVisual.StopAnimation(L"Opacity");
+                    if (const auto spriteVisual = childVisual.try_as<Microsoft::UI::Composition::SpriteVisual>())
+                    {
+                        spriteVisual.Shadow(nullptr);
+                    }
+                }
+
+                const auto visual = Microsoft::UI::Xaml::Hosting::ElementCompositionPreview::GetElementVisual(element);
+                if (visual != nullptr)
+                {
+                    visual.StopAnimation(L"Scale");
+                }
+
+                Microsoft::UI::Xaml::Hosting::ElementCompositionPreview::SetElementChildVisual(element, nullptr);
+            }
+        }
+
+        for (auto& storyboard : m_runningAnimations)
+        {
+            storyboard.Stop();
+        }
+        m_runningAnimations.clear();
+        children.Clear();
+
+        auto makeColor = [](uint8_t a, uint8_t r, uint8_t g, uint8_t b)
+        {
+            return winrt::Windows::UI::Color{ a, r, g, b };
+        };
+
+        auto edgeKey = [](int left, int right)
+        {
+            const int low = (std::min)(left, right);
+            const int high = (std::max)(left, right);
+            return (static_cast<long long>(low) << 32) | static_cast<unsigned int>(high);
+        };
+
+        std::unordered_set<long long> highlightedEdges;
+        std::vector<bool> highlightedNodes(static_cast<size_t>(m_graph.VertexCount()), false);
+        std::unordered_map<int, int> pathOrder;
+        for (size_t i = 0; i < highlightedPath.size(); ++i)
+        {
+            const int node = highlightedPath[i];
+            if (node >= 0 && node < m_graph.VertexCount())
+            {
+                highlightedNodes[static_cast<size_t>(node)] = true;
+                pathOrder[node] = static_cast<int>(i);
+            }
+
+            if (i > 0)
+            {
+                highlightedEdges.insert(edgeKey(highlightedPath[i - 1], highlightedPath[i]));
+            }
+        }
+
+        for (int from = 0; from < m_graph.VertexCount(); ++from)
+        {
+            for (const auto& [to, weight] : m_graph.Neighbors(from))
+            {
+                if (!m_graph.IsDirected() && from > to)
+                {
+                    continue;
+                }
+
+                const auto& start = m_nodePositions[static_cast<size_t>(from)];
+                const auto& end = m_nodePositions[static_cast<size_t>(to)];
+                const bool onPath = highlightedEdges.contains(edgeKey(from, to));
+
+                Line line;
+                line.X1(start.X);
+                line.Y1(start.Y);
+                line.X2(end.X);
+                line.Y2(end.Y);
+                line.Stroke(GetCachedBrush(onPath ? makeColor(255, 220, 38, 38) : makeColor(255, 148, 163, 184)));
+                line.StrokeThickness(onPath ? 4.0 : 2.0);
+                PathCanvas().Children().Append(line);
+
+                if (onPath)
+                {
+                    const int fromOrder = pathOrder.contains(from) ? pathOrder[from] : 0;
+                    const int toOrder = pathOrder.contains(to) ? pathOrder[to] : fromOrder;
+                    const int delay = (std::min)(fromOrder, toOrder) * 120;
+                    if (enableEffects)
+                    {
+                        StartHighlightAnimation(line, delay, false);
+                    }
+                }
+
+                TextBlock weightLabel;
+                weightLabel.Text(winrt::to_hstring(weight));
+                if (m_captionTextStyle != nullptr)
+                {
+                    weightLabel.Style(m_captionTextStyle);
+                }
+                Canvas::SetLeft(weightLabel, (start.X + end.X) / 2.0 + 4.0);
+                Canvas::SetTop(weightLabel, (start.Y + end.Y) / 2.0 - 16.0);
+                PathCanvas().Children().Append(weightLabel);
+            }
+        }
+
+        constexpr double nodeDiameter = 36.0;
+        for (int node = 0; node < m_graph.VertexCount(); ++node)
+        {
+            const auto& position = m_nodePositions[static_cast<size_t>(node)];
+            const bool onPath = highlightedNodes[static_cast<size_t>(node)];
+            const bool isSource = (node == source);
+            const bool isTarget = (node == target);
+            const auto nodeColor = isSource
+                ? makeColor(255, 34, 197, 94)
+                : (isTarget
+                    ? makeColor(255, 245, 158, 11)
+                    : (onPath ? makeColor(255, 220, 38, 38) : makeColor(255, 14, 116, 144)));
+
+            Microsoft::UI::Xaml::Shapes::Ellipse circle;
+            circle.Width(nodeDiameter);
+            circle.Height(nodeDiameter);
+            circle.Fill(GetCachedBrush(nodeColor));
+            circle.Stroke(GetCachedBrush(makeColor(255, 241, 245, 249)));
+            circle.StrokeThickness(2.0);
+
+            Canvas::SetLeft(circle, position.X - (nodeDiameter / 2.0));
+            Canvas::SetTop(circle, position.Y - (nodeDiameter / 2.0));
+            PathCanvas().Children().Append(circle);
+
+            if (enableEffects && (onPath || isSource || isTarget))
+            {
+                const int delay = pathOrder.contains(node) ? (pathOrder[node] * 120 + 60) : 0;
+                StartHighlightAnimation(circle, delay, true);
+                const auto role = isSource
+                    ? NodeAnimationRole::Source
+                    : (isTarget ? NodeAnimationRole::Target : NodeAnimationRole::Path);
+                StartNodePulseAndShadow(circle, delay, nodeColor, role);
+            }
+
+            TextBlock nodeLabel;
+            nodeLabel.Text(winrt::to_hstring(node));
+            nodeLabel.Foreground(GetCachedBrush(makeColor(255, 255, 255, 255)));
+            if (m_bodyStrongTextStyle != nullptr)
+            {
+                nodeLabel.Style(m_bodyStrongTextStyle);
+            }
+            Canvas::SetLeft(nodeLabel, position.X - 5.0);
+            Canvas::SetTop(nodeLabel, position.Y - 10.0);
+            PathCanvas().Children().Append(nodeLabel);
+        }
+    }
+
+    SolidColorBrush MainWindow::GetCachedBrush(Windows::UI::Color const& color)
+    {
+        const uint32_t key =
+            (static_cast<uint32_t>(color.A) << 24) |
+            (static_cast<uint32_t>(color.R) << 16) |
+            (static_cast<uint32_t>(color.G) << 8) |
+            static_cast<uint32_t>(color.B);
+
+        const auto cachedBrush = m_brushCache.find(key);
+        if (cachedBrush != m_brushCache.end())
+        {
+            return cachedBrush->second;
+        }
+
+        if (m_brushCache.size() >= 32)
+        {
+            // Keep brush cache bounded in case future render logic introduces dynamic colors.
+            m_brushCache.clear();
+        }
+
+        auto brush = SolidColorBrush(color);
+        m_brushCache.emplace(key, brush);
+        return brush;
+    }
+
+    bool MainWindow::TryParseInt(hstring const& text, int& parsedValue) const
+    {
+        std::wstring value{ text.c_str() };
+        const size_t firstNonSpace = value.find_first_not_of(L" \t\r\n");
+        if (firstNonSpace == std::wstring::npos)
+        {
+            return false;
+        }
+
+        const size_t lastNonSpace = value.find_last_not_of(L" \t\r\n");
+        value = value.substr(firstNonSpace, lastNonSpace - firstNonSpace + 1);
+
+        size_t digitStart = 0;
+        if (value[0] == L'+' || value[0] == L'-')
+        {
+            digitStart = 1;
+        }
+
+        if (digitStart == value.size())
+        {
+            return false;
+        }
+
+        for (size_t i = digitStart; i < value.size(); ++i)
+        {
+            if (!std::iswdigit(value[i]))
+            {
+                return false;
+            }
+        }
+
+        try
+        {
+            size_t parsedLength = 0;
+            const int candidate = std::stoi(value, &parsedLength, 10);
+            if (parsedLength != value.size())
+            {
+                return false;
+            }
+
+            parsedValue = candidate;
+            return true;
+        }
+        catch (...)
+        {
+            return false;
+        }
+    }
+
+    void MainWindow::SetInteractionEnabled(bool isEnabled)
+    {
+        SolveButton().IsEnabled(isEnabled);
+        TestCaseBox().IsEnabled(isEnabled);
+        SourceNodeBox().IsEnabled(isEnabled);
+        TargetNodeBox().IsEnabled(isEnabled);
+        IterationBox().IsEnabled(isEnabled);
+        CancelButton().IsEnabled(!isEnabled && !m_cancelRequested.load());
+    }
+
+    void MainWindow::UpdateProgressUI(int completedIterations, int totalIterations)
+    {
+        auto progressBar = BenchmarkProgressBar();
+        if (progressBar != nullptr)
+        {
+            const double percent = (totalIterations > 0)
+                ? (static_cast<double>(completedIterations) * 100.0 / static_cast<double>(totalIterations))
+                : 0.0;
+
+            progressBar.Visibility(Visibility::Visible);
+            progressBar.Value(percent);
+
+            std::wstringstream stream;
+            stream << L"Đang chạy benchmark: " << completedIterations << L"/" << totalIterations
+                   << L" (" << static_cast<int>(percent) << L"%)";
+            StatusTextBlock().Text(hstring(stream.str()));
+        }
+    }
+
+    void MainWindow::ResetProgressUI()
+    {
+        auto progressBar = BenchmarkProgressBar();
+        if (progressBar == nullptr)
+        {
+            return;
+        }
+
+        progressBar.Value(0.0);
+        progressBar.Visibility(Visibility::Collapsed);
+    }
+
+    bool MainWindow::TryParseIterations(int& parsedValue)
+    {
+        const double value = IterationBox().Value();
+        if (!std::isfinite(value))
+        {
+            return false;
+        }
+
+        const double roundedValue = std::round(value);
+        if (std::fabs(value - roundedValue) > 0.000001)
+        {
+            return false;
+        }
+
+        parsedValue = static_cast<int>(roundedValue);
+        return parsedValue >= 1 && parsedValue <= 1000;
+    }
+
+    hstring MainWindow::BuildResultText(::DijkstraDeliverySystem::DijkstraResult const& result, int source, int target, int testCase) const
+    {
+        std::wstringstream stream;
+        stream << L"Test case: TC" << testCase << L"\n";
+        stream << L"Source: " << source << L", Target: " << target << L"\n";
+
+        if (result.Found)
+        {
+            stream << L"Shortest distance: " << result.Distance << L"\n";
+            stream << L"Path: ";
+
+            for (size_t i = 0; i < result.Path.size(); ++i)
+            {
+                if (i > 0)
+                {
+                    stream << L" -> ";
+                }
+                stream << result.Path[i];
+            }
+            stream << L"\n";
+        }
+        else
+        {
+            stream << L"No path found.\n";
+        }
+
+        if (m_expectedDistance >= 0)
+        {
+            const bool pass = result.Found && result.Distance == m_expectedDistance;
+            stream << L"Expected distance: " << m_expectedDistance
+                   << L" (" << (pass ? L"PASS" : L"CHECK") << L")\n";
+        }
+
+        stream << L"\nLegend: source (subtle pulse), target (strong pulse), path node (light pulse), teal = normal node";
+        stream << L"\n";
+         stream << L"Benchmark adjacency list + heap (" << result.Benchmark.Iterations << L" runs): "
+               << L"best=" << result.Benchmark.BestMicroseconds << L"us, "
+               << L"avg=" << std::fixed << std::setprecision(2) << result.Benchmark.AverageMicroseconds << L"us, "
+               << L"worst=" << result.Benchmark.WorstMicroseconds << L"us";
+
+         stream << L"\nBenchmark adjacency matrix + linear scan (" << result.MatrixBenchmark.Iterations << L" runs): "
+             << L"best=" << result.MatrixBenchmark.BestMicroseconds << L"us, "
+             << L"avg=" << std::fixed << std::setprecision(2) << result.MatrixBenchmark.AverageMicroseconds << L"us, "
+             << L"worst=" << result.MatrixBenchmark.WorstMicroseconds << L"us";
+
+         stream << L"\nCross-check (distance equality): "
+             << (result.CrossCheckPassed ? L"PASS" : L"MISMATCH");
+
+        return hstring(stream.str());
+    }
+}
+
+</code>
+
+MainWindow.xaml.h:
+<code>
+#pragma once
+
+#include "Graph.h"
+#include "DijkstraSolver.h"
+#include "MainWindow.g.h"
+
+#include <atomic>
+#include <chrono>
+#include <unordered_map>
+#include <vector>
+
+namespace winrt::DijkstraDeliverySystem::implementation
+{
+    struct MainWindow : MainWindowT<MainWindow>
+    {
+        MainWindow();
+
+        void TestCaseBox_SelectionChanged(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::Controls::SelectionChangedEventArgs const& args);
+        winrt::fire_and_forget SolveButton_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::RoutedEventArgs const& args);
+        void CancelButton_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::RoutedEventArgs const& args);
+
+    private:
+        enum class NodeAnimationRole
+        {
+            Source,
+            Target,
+            Path,
+        };
+
+        void BuildSampleGraph();
+        void LoadGraphByTestCase(int testCase);
+        void SetInputsForTestCase(int testCase);
+        int SelectedTestCase();
+        void GenerateNodePositions(int vertexCount);
+        void RenderGraph(std::vector<int> const& highlightedPath, int source = -1, int target = -1, bool enableEffects = true);
+        void PathCanvas_SizeChanged(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::SizeChangedEventArgs const& args);
+        void EnsureResizeTimer();
+        void ResizeTimer_Tick(winrt::Microsoft::UI::Dispatching::DispatcherQueueTimer const& sender, winrt::Windows::Foundation::IInspectable const& args);
+        void StartHighlightAnimation(winrt::Microsoft::UI::Xaml::UIElement const& element, int delayMs, bool forNode);
+        void StartNodePulseAndShadow(winrt::Microsoft::UI::Xaml::UIElement const& element, int delayMs, winrt::Windows::UI::Color const& glowColor, NodeAnimationRole role);
+        void SetInteractionEnabled(bool isEnabled);
+        void UpdateProgressUI(int completedIterations, int totalIterations);
+        void ResetProgressUI();
+        winrt::Microsoft::UI::Xaml::Media::SolidColorBrush GetCachedBrush(winrt::Windows::UI::Color const& color);
+        bool TryParseInt(winrt::hstring const& text, int& parsedValue) const;
+        bool TryParseIterations(int& parsedValue);
+        winrt::hstring BuildResultText(::DijkstraDeliverySystem::DijkstraResult const& result, int source, int target, int testCase) const;
+
+        ::DijkstraDeliverySystem::Graph m_graph;
+        ::DijkstraDeliverySystem::DijkstraSolver m_solver;
+        std::vector<winrt::Windows::Foundation::Point> m_nodePositions;
+        std::vector<int> m_lastHighlightedPath;
+        std::vector<winrt::Microsoft::UI::Xaml::Media::Animation::Storyboard> m_runningAnimations;
+        std::unordered_map<uint32_t, winrt::Microsoft::UI::Xaml::Media::SolidColorBrush> m_brushCache;
+        winrt::Microsoft::UI::Xaml::Style m_captionTextStyle{ nullptr };
+        winrt::Microsoft::UI::Xaml::Style m_bodyStrongTextStyle{ nullptr };
+        winrt::Microsoft::UI::Dispatching::DispatcherQueueTimer m_resizeTimer{ nullptr };
+        std::chrono::steady_clock::time_point m_lastResizeSignal{};
+        int m_lastHighlightedSource{ -1 };
+        int m_lastHighlightedTarget{ -1 };
+        double m_lastCanvasWidth{ -1.0 };
+        double m_lastCanvasHeight{ -1.0 };
+        int m_expectedDistance{ -1 };
+        bool m_isUiReady{ false };
+        bool m_isSolving{ false };
+        bool m_resizePending{ false };
+        bool m_resizeNeedsFinalRender{ false };
+        bool m_resizeActive{ false };
+        std::atomic_bool m_cancelRequested{ false };
+    };
+}
+
+namespace winrt::DijkstraDeliverySystem::factory_implementation
+{
+    struct MainWindow : MainWindowT<MainWindow, implementation::MainWindow>
+    {
+    };
+}
+
+</code>
+
+MatrixGraph.cpp:
+<code>
+#include "pch.h"
+#include "MatrixGraph.h"
+
+#include <stdexcept>
+
+namespace DijkstraDeliverySystem
+{
+    MatrixGraph::MatrixGraph(const Graph& graph)
+        : m_vertexCount(graph.VertexCount()),
+          m_directed(graph.IsDirected()),
+          m_weights(static_cast<size_t>(graph.VertexCount()), std::vector<Graph::Weight>(static_cast<size_t>(graph.VertexCount()), kNoEdge))
+    {
+        for (int from = 0; from < m_vertexCount; ++from)
+        {
+            m_weights[static_cast<size_t>(from)][static_cast<size_t>(from)] = 0;
+
+            for (const auto& [to, weight] : graph.Neighbors(from))
+            {
+                auto& current = m_weights[static_cast<size_t>(from)][static_cast<size_t>(to)];
+                if (current == kNoEdge || weight < current)
+                {
+                    current = weight;
+                }
+            }
+        }
+    }
+
+    int MatrixGraph::VertexCount() const noexcept
+    {
+        return m_vertexCount;
+    }
+
+    bool MatrixGraph::IsDirected() const noexcept
+    {
+        return m_directed;
+    }
+
+    bool MatrixGraph::HasEdge(int from, int to) const
+    {
+        if (from < 0 || from >= m_vertexCount || to < 0 || to >= m_vertexCount)
+        {
+            throw std::out_of_range("vertex index is out of range");
+        }
+
+        return m_weights[static_cast<size_t>(from)][static_cast<size_t>(to)] != kNoEdge;
+    }
+
+    Graph::Weight MatrixGraph::WeightAt(int from, int to) const
+    {
+        if (from < 0 || from >= m_vertexCount || to < 0 || to >= m_vertexCount)
+        {
+            throw std::out_of_range("vertex index is out of range");
+        }
+
+        return m_weights[static_cast<size_t>(from)][static_cast<size_t>(to)];
+    }
+}
+
+</code>
+
+MatrixGraph.h:
+<code>
+#pragma once
+
+#include "Graph.h"
+
+#include <vector>
+
+namespace DijkstraDeliverySystem
+{
+    class MatrixGraph
+    {
+    public:
+        explicit MatrixGraph(const Graph& graph);
+
+        int VertexCount() const noexcept;
+        bool IsDirected() const noexcept;
+        bool HasEdge(int from, int to) const;
+        Graph::Weight WeightAt(int from, int to) const;
+
+    private:
+        static constexpr Graph::Weight kNoEdge = -1;
+
+        int m_vertexCount{};
+        bool m_directed{};
+        std::vector<std::vector<Graph::Weight>> m_weights;
+    };
+}
+
+</code>
+
+pch.cpp:
+<code>
+#include "pch.h"
+
+</code>
+
+pch.h:
+<code>
+#pragma once
+#define DISABLE_XAML_GENERATED_MAIN
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+
+#include <windows.h>
+#include <unknwn.h>
+#include <restrictederrorinfo.h>
+#include <hstring.h>
+
+// Undefine GetCurrentTime macro to prevent
+// conflict with Storyboard::GetCurrentTime
+#undef GetCurrentTime
+
+#include <winrt/Windows.Foundation.h>
+#include <winrt/Windows.Foundation.Collections.h>
+#include <winrt/Windows.Foundation.Numerics.h>
+#include <winrt/Windows.ApplicationModel.Activation.h>
+#include <winrt/Microsoft.UI.Composition.h>
+#include <winrt/Microsoft.UI.Xaml.h>
+#include <winrt/Microsoft.UI.Xaml.Controls.h>
+#include <winrt/Microsoft.UI.Xaml.Controls.Primitives.h>
+#include <winrt/Microsoft.UI.Xaml.Data.h>
+#include <winrt/Microsoft.UI.Xaml.Interop.h>
+#include <winrt/Microsoft.UI.Xaml.Hosting.h>
+#include <winrt/Microsoft.UI.Xaml.Markup.h>
+#include <winrt/Microsoft.UI.Xaml.Media.h>
+#include <winrt/Microsoft.UI.Xaml.Media.Animation.h>
+#include <winrt/Microsoft.UI.Xaml.Navigation.h>
+#include <winrt/Microsoft.UI.Xaml.Shapes.h>
+#include <winrt/Microsoft.UI.Dispatching.h>
+#include <wil/cppwinrt_helpers.h>
+
+</code>
+
+PRESENTATION_OUTLINE.md:
+<code>
+# Đề cương thuyết trình Đề tài 10 (7 mục bắt buộc)
+
+## 1. Cơ sở lý thuyết
+- Phát biểu bài toán đường đi ngắn nhất trên đồ thị có trọng số dương.
+- Tư tưởng tham lam của Dijkstra: mỗi bước chọn đỉnh có khoảng cách tạm thời nhỏ nhất.
+- Điều kiện áp dụng: trọng số không âm.
+- Độ phức tạp lý thuyết theo cấu trúc dữ liệu:
+  - Adjacency list + min-heap: O((V + E) log V).
+  - Adjacency matrix + linear scan: O(V^2).
+
+## 2. Phân tích bài toán
+- Mô hình hệ thống giao hàng:
+  - Đỉnh: kho bãi/điểm giao.
+  - Cạnh: tuyến đường kết nối.
+  - Trọng số: chi phí, thời gian, hoặc quãng đường.
+- Input:
+  - Tập đỉnh, tập cạnh, trọng số dương, source, target.
+- Output:
+  - Đường đi ngắn nhất, tổng chi phí, trạng thái có/không có đường đi.
+- Ràng buộc và giả định:
+  - Không có trọng số âm.
+  - Dữ liệu hợp lệ theo chỉ số đỉnh.
+
+## 3. Thiết kế thuật toán
+- Cấu trúc dữ liệu sử dụng:
+  - Graph adjacency list.
+  - MatrixGraph adjacency matrix.
+  - Distances, Parents, visited.
+- Luồng xử lý:
+  - Chạy Dijkstra theo list+heap.
+  - Chạy Dijkstra theo matrix+scan.
+  - Cross-check kết quả khoảng cách để xác minh tính đúng.
+- Truy vết đường đi ngắn nhất bằng mảng predecessor (Parents).
+- Trình bày giả mã (pseudo-code) cho 2 biến thể.
+
+## 4. Cài đặt chương trình
+- Công nghệ: C++20/23, WinUI 3 (C++/WinRT), Desktop unpackaged.
+- Tách lớp theo trách nhiệm:
+  - Graph.*: mô hình đồ thị adjacency list và validation.
+  - MatrixGraph.*: chuyển đổi và truy cập trọng số theo matrix.
+  - DijkstraSolver.*: 2 biến thể Dijkstra + benchmark + cross-check.
+  - MainWindow.xaml/.cpp: giao diện, render graph, highlight animation, hiển thị benchmark.
+- Demo thao tác:
+  - Chọn testcase, nhập source/target, số lần benchmark, chạy và đọc kết quả.
+
+## 5. Thử nghiệm và đánh giá
+- Bộ test bắt buộc:
+  - TC1: reachable.
+  - TC2: multi-path.
+  - TC3: unreachable.
+  - TC4: source = target.
+  - TC5: large graph (50 nodes).
+- Bảng kết quả expected/actual cho từng testcase.
+- Bảng benchmark best/avg/worst cho cả 2 biến thể.
+- Nhận xét xu hướng:
+  - Đồ thị thưa: list+heap thường nhanh hơn.
+  - Đồ thị đặc: matrix+scan có thể cạnh tranh hơn.
+- Đối chiếu thực nghiệm với Big-O trong tài liệu phân tích.
+
+## 6. Kết luận và hướng phát triển
+- Kết quả đạt được:
+  - Giải đúng bài toán đường đi ngắn nhất.
+  - Có so sánh đa chiều theo cấu trúc dữ liệu.
+- Hạn chế hiện tại:
+  - Chưa mô hình hóa traffic real-time và ràng buộc time windows.
+- Hướng mở rộng:
+  - Nhập dữ liệu JSON từ file.
+  - So sánh thêm Bellman-Ford, A*.
+  - Mô phỏng logistics sát thực tế hơn.
+
+## 7. Đánh giá thành viên
+- Họ tên + MSSV từng thành viên.
+- Vai trò chính (thuật toán, UI, benchmark, tài liệu, thuyết trình).
+- Tỷ lệ đóng góp có minh chứng (commit, tài liệu, slide).
+
+## Appendix (khuyến nghị để tăng điểm)
+- Ảnh chụp UI trước/sau khi highlight path.
+- Biểu đồ cột benchmark cho TC1..TC5 (2 biến thể).
+- Video demo dự phòng 2-3 phút.
+- Slide backup cho phần hỏi đáp:
+  - Vì sao Dijkstra không dùng cho trọng số âm?
+  - Khi nào nên chọn list+heap, khi nào nên chọn matrix+scan?
+
+</code>
+
+Topic-10-Assignment-Brief.md:
+<code>
+# Hoàng Việt Quang (Leader)
+
+- 066206005044
+- Code chính + Giao diện + Hiệu ứng + Tích hợp
+- Viết hàm Dijkstra
+- Tạo project WinUI 3 + Canvas vẽ đồ thị
+- Làm animation highlight node & đường đi
+- Ghép toàn bộ code lại
+
+# PHÂN TÍCH THIẾT KẾ GIẢI THUẬT
+
+# BÀI TẬP LỚN CUỐI KỲ
+
+---o0o---
+
+## Phần 1. CHỦ ĐỀ BÀI NHÓM
+
+### 10. Tối ưu hóa hệ thống giao hàng bằng thuật toán Dijkstra
+
+Nội dung: Tìm đường đi ngắn nhất giữa các kho bãi trong một mạng lưới giao thông có trọng số dương.
+
+Mục tiêu: Áp dụng chiến lược Tham lam để giải quyết bài toán thực tế và đánh giá độ phức tạp theo cấu trúc dữ liệu đồ thị.
+
+Ghi chú: Ngoài những chiến lược thuật toán đã gợi ý, các nhóm có thể nghiên cứu thêm các chiến lược thuật toán khác phù hợp để áp dụng xử lý bài toán để có sự so sánh đánh giá thêm về hiệu quả giải quyết vấn đề giữa các chiến lược.
+
+## Phần 2. HƯỚNG DẪN NỘP BÀI
+
+Hình thức nộp bài: 1 file slide báo cáo thuyết trình và source code.
+
+Hình thức đánh giá: Thuyết trình nhóm slide báo cáo, trình bày Demo.
+
+1. Nội dung cơ bản của slide báo cáo thuyết trình PowerPoint:
+- Cơ sở lý thuyết
+- Phân tích bài toán
+- Thiết kế thuật toán
+- Cài đặt chương trình
+- Thử nghiệm đánh giá
+- Kết luận và hướng phát triển
+- Đánh giá thành viên
+
+1. Source code: C++ hoặc Python
+
+## Phần 3. ĐÁNH GIÁ ĐIỂM
+
+1. Chất lượng nội dung bài làm 40%
+2. Chất lượng hình thức trình bày bài làm 30%
+3. Thuyết trình 30%
+
+</code>
+
+XamlMetaDataProvider.cpp:
+<code>
+// This file is generated by the build to support Xaml apps
+#include "pch.h"
+#include "XamlMetaDataProvider.h"
+#include "XamlMetaDataProvider.g.cpp"
+
+</code>
+

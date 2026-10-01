@@ -1,0 +1,81 @@
+{
+  "dataset": "Ames Housing (OpenIntro file already present in workspace)",
+  "dataset_role": "Phần mở rộng để đánh giá Regression Tree; không phải dataset mục 7.1.",
+  "source_evidence": "House Price được mô tả cho Linear Regression ở AI-Ex-2027.pdf, trang 16-17.",
+  "data_path": "D:\\courses\\artificial-intelligence\\bai_5_2_house_price_prediction\\data\\raw\\ames.csv",
+  "raw_rows": 2930,
+  "raw_columns": 82,
+  "usable_rows": 2930,
+  "selected_feature_count": 19,
+  "numeric_features": [
+    "area",
+    "Lot.Area",
+    "Overall.Qual",
+    "Overall.Cond",
+    "Year.Built",
+    "Year.Remod.Add",
+    "Full.Bath",
+    "Half.Bath",
+    "Bedroom.AbvGr",
+    "TotRms.AbvGrd",
+    "Fireplaces",
+    "Garage.Cars",
+    "Garage.Area"
+  ],
+  "categorical_features": [
+    "MS.Zoning",
+    "Neighborhood",
+    "Bldg.Type",
+    "House.Style",
+    "Kitchen.Qual",
+    "Sale.Condition"
+  ],
+  "target": "price",
+  "target_missing_or_invalid_rows": 0,
+  "selected_feature_missing_values": {
+    "Garage.Cars": 1,
+    "Garage.Area": 1
+  },
+  "duplicate_rows_raw": 0,
+  "iqr_outlier_counts_descriptive_only": {
+    "area": 75,
+    "Lot.Area": 127,
+    "Overall.Qual": 4,
+    "Overall.Cond": 252,
+    "Year.Built": 9,
+    "Year.Remod.Add": 0,
+    "Full.Bath": 4,
+    "Half.Bath": 0,
+    "Bedroom.AbvGr": 78,
+    "TotRms.AbvGrd": 51,
+    "Fireplaces": 13,
+    "Garage.Cars": 17,
+    "Garage.Area": 42
+  },
+  "outlier_policy": "Chỉ audit; không lọc theo toàn dataset nên không làm rò rỉ test.",
+  "random_state": 42,
+  "test_size": 0.3,
+  "train_samples": 2051,
+  "test_samples": 879,
+  "preprocessing": "Median imputation cho số; most-frequent + one-hot cho category; fit trong pipeline trên train.",
+  "scaling": "Không dùng; Decision Tree không cần StandardScaler.",
+  "criterion": "squared_error",
+  "cv_folds": 5,
+  "cv_scoring": "neg_root_mean_squared_error",
+  "best_cv_rmse": 34949.65640761963,
+  "best_params": {
+    "max_depth": 10,
+    "min_samples_leaf": 5,
+    "min_samples_split": 2
+  },
+  "train_metrics_reference_only": {
+    "mae": 14240.07686039663,
+    "rmse": 23122.744233844685,
+    "r2": 0.9121457429343243
+  },
+  "test_metrics": {
+    "mae": 22691.651551190243,
+    "rmse": 34913.23546451173,
+    "r2": 0.8265955602257832
+  }
+}
